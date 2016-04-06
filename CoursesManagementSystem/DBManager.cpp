@@ -1,5 +1,9 @@
 #include"DBManager.h"
 
+#include<string>
+#include<iostream>
+using namespace std;
+
 DBManager* DBManager::singleton = NULL;
 
 DBManager* DBManager::get_singleton()
