@@ -2,6 +2,7 @@
 #define _DB_MANAGER_H_
 
 #include<string>
+using namespace std;
 
 class DBManager
 {
