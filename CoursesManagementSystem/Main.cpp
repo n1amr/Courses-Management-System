@@ -1,5 +1,5 @@
 #include"DBManager.h"
-
+#include"User.h"
 #include<iostream>
 #include<string>
 using namespace std;
@@ -23,5 +23,12 @@ int main()
   data = NULL;
   data = db->load("User", 3, data_len);
   cout << "Username = " << data[0] << ", Password = " << data[1] << endl;
-  return 0;
+  
+
+  User* user1=new User();
+  
+     user1->save();
+	 user1->save();
+	 user1->load(3);
+	 return 0;
 }
