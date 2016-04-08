@@ -7,60 +7,61 @@ using namespace std;
 
 User::User()
 {
-	id = -1;
-
-}
-User::User(string user , string pass)
-{
-	user_name = user;
-	pass_word = pass;
+  id = -1;
 }
 
-void User::set_username(string name)
+User::User(string username, string password)
 {
-	user_name = name;
+  this->username = username;
+  this->password = password;
+  this->id = -1;
 }
 
-void User::set_password(string pass)
+void User::set_username(string username)
 {
-	pass_word = pass;
+  this->username = username;
+}
+
+void User::set_password(string password)
+{
+  this->password = password;
 }
 
 string User::get_username()
 {
-	return user_name;
+  return username;
 }
 
 string User::get_password()
 {
-	return pass_word;
+  return password;
 }
+
 User* User::load(int id)
 {
-	DBManager* db = DBManager::get_singleton();
-	
-	int data_len = 2;
-	string *data = new string[data_len];
-	
-	User *user = new User();
-    data = db->load("user", id, data_len);
+  DBManager* db = DBManager::get_singleton();
+  
+  int data_len = 2;
+  string *data = new string[data_len];
+  
+  User *user = new User();
+  data = db->load("user", id, data_len);
 
-	user->set_username(data[0]);
-	user->set_password(data[1]);
+  user->set_username(data[0]);
+  user->set_password(data[1]);
 
-	return user;
+  return user;
 }
 
 void User::save()
 {
-	DBManager* db = DBManager::get_singleton();
-	
-	int data_len = 2;
-	string *data = new string[data_len];
-	
-	data[0] = user_name; // TODO
-	data[1] = pass_word; // TODO
-	id++;
-	db->store("User", id, data_len, data);
-	
+  DBManager* db = DBManager::get_singleton();
+  
+  int data_len = 2;
+  string *data = new string[data_len];
+  
+  data[0] = username;
+  data[1] = password;
+  
+  id = db->store("User", id, data_len, data); 
 }

@@ -13,7 +13,7 @@ DBManager* DBManager::get_singleton()
   return singleton;
 }
 
-void DBManager::store(string table_name, int id, int data_len, string* data)
+int DBManager::store(string table_name, int id, int data_len, string* data)
 {
   cout << "Storing to \"" << table_name << "\" table, id #" << id << ": ";
   for(int i = 0; i < data_len; i++)
@@ -21,6 +21,7 @@ void DBManager::store(string table_name, int id, int data_len, string* data)
     cout << data[i] << "\t";
   }
   cout << endl;
+  return -1;
 }
 
 string* DBManager::load(string table_name, int id, int data_len)
