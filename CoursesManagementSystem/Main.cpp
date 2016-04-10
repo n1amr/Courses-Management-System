@@ -7,28 +7,21 @@ using namespace std;
 int main()
 {
 	cout << "main\n";
-	
-	User* user1=new User();
-	
-	// TODO
-	user1->set_username("username1");
-	user1->set_password("password1");
+	DBManager* db = DBManager::get_singleton();
 
-	user1->save(); // save
-	
-	User* user2 = User::load(3);
+	string * data;
+	int data_len = 2;
 
-	cout<< user2->get_username()<<"\n";
-	cout << user2->get_password() << "\n";
+	cout << "Storing from main\n";
+	data = new string[data_len];
+	data[0] = "Student 1";
+	data[1] = "Password 1";
+	db->store("User", 5, data_len, data);
 
-	// TODO
-	user2->set_username("username2_new"); // update values locally
-	user2->set_password("password2_new");
-
-	user2->save(); // commit updates to database
-	
-	cout << user2->get_username() << "\n";
-	cout << user2->get_password() << "\n";
-
+	cout << "Loading from main\n";
+	delete[] data;
+	data = NULL;
+	data = db->load("User", 3, data_len);
+	cout << "Username = " << data[0] << ", Password = " << data[1] << endl;
 	return 0;
 }
