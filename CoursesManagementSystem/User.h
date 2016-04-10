@@ -9,13 +9,16 @@ class User
 {
 public:
 	User();
+	User(int id);
 	User(string user, string pass);
 	static User* load(int id);
+	static User** loadAll();
 	void set_username(string username);
 	void set_password(string password);
 	string get_username();
 	string get_password();
-	void save();
+	int save();
+	bool trash();
 
 private:
 	int id;

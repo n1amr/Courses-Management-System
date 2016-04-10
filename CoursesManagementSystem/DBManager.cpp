@@ -1,8 +1,22 @@
 #include"DBManager.h"
 
+#include<stdio.h>
 #include<string>
 #include<iostream>
+#include<fstream>
 using namespace std;
+
+/* Helper functions */
+string get_database_path() { return "database"; }
+string get_table_path(string table_name) {return get_database_path() + "/" + table_name; }
+string get_table_info_filename(string table_name) { return get_table_path(table_name) + "/info"; }
+string get_entry_filename(string table_name, int id) { return get_table_path(table_name) + "/" + to_string(id) + ".dat"; }
+bool file_exists(string filename) {
+	ifstream f(filename.c_str());
+	bool exists = f.good();
+	f.close();
+	return exists;
+}
 
 DBManager* DBManager::singleton = NULL;
 
@@ -15,24 +29,70 @@ DBManager* DBManager::get_singleton()
 
 int DBManager::store(string table_name, int id, int data_len, string* data)
 {
-	cout << "Storing to \"" << table_name << "\" table, id #" << id << ": ";
+	bool new_entry = (id == -1);
+	if(new_entry)
+		id = get_last_id(table_name) + 1;
+
+	// Write entry data into file
+	ofstream fout(get_entry_filename(table_name, id));
 	for(int i = 0; i < data_len; i++)
-	{
-		cout << data[i] << "\t";
-	}
-	cout << endl;
-	return -1;
+		fout << data[i] << endl;
+	fout.close();
+
+	// Update last id
+	fout.open(get_table_info_filename(table_name));
+	fout << id;
+	fout.close();
+
+	return id;
 }
 
 string* DBManager::load(string table_name, int id, int data_len)
 {
-	string* data = new string[data_len];
-	string s;
+	bool new_row = (id == -1);
 
+	string s;
+	string* data = new string[data_len];
+
+	// Read entry file lines
+	ifstream fin(get_entry_filename(table_name, id));
 	for(int i = 0; i < data_len; i++)
-	{
-		cout << ">";
-		cin >> data[i];
-	}
+		getline(fin, data[i]);
+	fin.close();
+
 	return data;
+}
+
+string** DBManager::loadAll(string table_name, int data_len)
+{
+	int last_id = get_last_id(table_name);
+
+	string **rows = new string*[last_id + 1];
+	for(int i = 0; i < last_id + 1; i++)
+		rows[i] = NULL;
+
+	for(int id = 0; id <= last_id; id++)
+	{
+		if(file_exists(get_entry_filename(table_name, id)))
+			rows[id] = load(table_name, id, data_len);
+	}
+
+	return rows;
+}
+
+bool DBManager::trash(string table_name, int id)
+{
+	bool successful = (remove(get_entry_filename(table_name, id).c_str()) == 0);
+	return successful;
+}
+
+int DBManager::get_last_id(string table_name)
+{
+	int last_id = -1;
+
+	ifstream fin(get_table_info_filename(table_name));
+	fin >> last_id;
+	fin.close();
+
+	return last_id;
 }

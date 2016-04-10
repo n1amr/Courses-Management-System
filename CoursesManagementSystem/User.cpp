@@ -10,6 +10,12 @@ User::User()
 	id = -1;
 }
 
+// TODO
+User::User(int id)
+{
+	this->id = id;
+}
+
 User::User(string username, string password)
 {
 	this->username = username;
@@ -40,11 +46,11 @@ string User::get_password()
 User* User::load(int id)
 {
 	DBManager* db = DBManager::get_singleton();
-	
+
 	int data_len = 2;
 	string *data = new string[data_len];
-	
-	User *user = new User();
+
+	User *user = new User(id);
 	data = db->load("user", id, data_len);
 
 	user->set_username(data[0]);
@@ -53,15 +59,51 @@ User* User::load(int id)
 	return user;
 }
 
-void User::save()
+User** User::loadAll()
 {
 	DBManager* db = DBManager::get_singleton();
-	
+	int data_len = 2;
+
+	string** users_data = db->loadAll("user", data_len);
+
+	int count = db->get_last_id("user") + 1;
+	string s;
+
+	User** users = new User*[count];
+	for(int i = 0; i < count; i++)
+	{
+		string *data = users_data[i];
+
+		User *user = NULL;
+		if(data != NULL)
+		{
+			user = new User();
+			user->id = i;
+			user->set_username(data[0]);
+			user->set_password(data[1]);
+		}
+		users[i] = user;
+	}
+
+	return users;
+}
+
+int User::save()
+{
+	DBManager* db = DBManager::get_singleton();
+
 	int data_len = 2;
 	string *data = new string[data_len];
-	
+
 	data[0] = username;
 	data[1] = password;
-	
-	id = db->store("User", id, data_len, data); 
+
+	id = db->store("user", id, data_len, data);
+	return id;
+}
+
+bool User::trash()
+{
+	DBManager* db = DBManager::get_singleton();
+	return db->trash("user", id);
 }
