@@ -3,6 +3,7 @@
 
 #include<string>
 #include"DBManager.h"
+#include<vector>
 using namespace std;
 
 class User
@@ -24,6 +25,7 @@ private:
 	int id;
 	string username;
 	string password;
+	vector<int> *courses;
 
 };
 

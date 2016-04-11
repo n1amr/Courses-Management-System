@@ -155,8 +155,8 @@ void run_course_form()
 			if(course != NULL)
 			{
 				cout << "Course #" << i << endl;
-				cout << "Username: " << course->get_username() << endl;
-				cout << "Password: " << course->get_password() << endl;
+				cout << "Username: " << course->get_name() << endl;
+				// cout << "Password: " << course->get_password() << endl; //TODO
 				cout << endl;
 			}
 		}
@@ -165,14 +165,14 @@ void run_course_form()
 	{
 		Course* course = new Course();
 
-		cout << "Enter username:";
+		cout << "Enter course name:";
 		getline(cin, s);
 		if(s.length() > 0)
-			course->set_username(s);
-		cout << "Enter password:";
-		getline(cin, s);
-		if(s.length() > 0)
-			course->set_password(s);
+			course->set_name(s);
+		// cout << "Enter password:";
+		// getline(cin, s);
+		// if(s.length() > 0)
+		// 	course->set_password(s);
 
 		int id = course->save();
 		delete course;
@@ -186,8 +186,8 @@ void run_course_form()
 
 		Course* course = Course::load(id);
 
-		cout << "Username: " << course->get_username() << endl;
-		cout << "Password: " << course->get_password() << endl;
+		cout << "Course name: " << course->get_name() << endl;
+		// cout << "Password: " << course->get_password() << endl; //TODO
 
 		delete course;
 	}
@@ -198,14 +198,14 @@ void run_course_form()
 
 		Course* course = Course::load(id);
 
-		cout << "Edit username(" << course->get_username() << "):" ;
+		cout << "Edit course name(" << course->get_name() << "):" ;
 		getline(cin, s);
 		if(s.length() > 0)
-			course->set_username(s);
-		cout << "Edit password(" << course->get_password() << "):" ;
-		getline(cin, s);
-		if(s.length() > 0)
-			course->set_password(s);
+			course->set_name(s);
+		// cout << "Edit password(" << course->get_password() << "):" ;
+		// getline(cin, s);
+		// if(s.length() > 0)
+		// 	course->set_password(s);
 
 		id = course->save();
 		cout << "Course was saved woth id #" << id << endl;

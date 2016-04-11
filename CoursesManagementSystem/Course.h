@@ -3,26 +3,29 @@
 
 #include<string>
 #include"DBManager.h"
+#include<list>
 using namespace std;
 
 class Course
 {
 public:
 	Course();
-	Course(string user, string pass);
+	Course(string name);
 	static Course* load(int id);
 	static Course** loadAll();
-	void set_username(string username);
-	void set_password(string password);
-	string get_username();
-	string get_password();
 	int save();
 	bool trash();
 
+	void set_name(string name);
+	string get_name();
+
+	list<Course*>* get_prerequisites();
+	void add_prerequisites(Course* course);
+
 private:
 	int id;
-	string username;
-	string password;
+	string name;
+	list<int> *prerequisites;
 
 };
 

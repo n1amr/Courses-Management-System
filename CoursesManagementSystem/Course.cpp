@@ -7,34 +7,34 @@ using namespace std;
 
 Course::Course()
 {
-	id = -1;
-}
-
-Course::Course(string username, string password)
-{
-	this->username = username;
-	this->password = password;
 	this->id = -1;
 }
 
-void Course::set_username(string username)
+Course::Course(string name)
 {
-	this->username = username;
+	this->id = -1;
+	this->name = name;
+	this->prerequisites = new list<int>();
 }
 
-void Course::set_password(string password)
+void Course::set_name(string name)
 {
-	this->password = password;
+	this->name = name;
 }
 
-string Course::get_username()
+string Course::get_name()
 {
-	return username;
+	return name;
 }
 
-string Course::get_password()
+list<Course*>* Course::get_prerequisites()
 {
-	return password;
+	return new list<Course*>(); //TODO
+}
+
+void Course::add_prerequisites(Course* course)
+{
+	//TODO
 }
 
 Course* Course::load(int id)
@@ -48,8 +48,8 @@ Course* Course::load(int id)
 	course->id = id;
 	data = db->load("course", id, data_len);
 
-	course->set_username(data[0]);
-	course->set_password(data[1]);
+	course->set_name(data[0]);
+	// course->set_password(data[1]); //TODO
 
 	return course;
 }
@@ -74,8 +74,8 @@ Course** Course::loadAll()
 		{
 			course = new Course();
 			course->id = i;
-			course->set_username(data[0]);
-			course->set_password(data[1]);
+			course->set_name(data[0]);
+			// course->set_password(data[1]); //TODO
 		}
 		courses[i] = course;
 	}
@@ -90,8 +90,8 @@ int Course::save()
 	int data_len = 2;
 	string *data = new string[data_len];
 
-	data[0] = username;
-	data[1] = password;
+	data[0] = name;
+	// data[1] = password; // TODO
 
 	id = db->store("course", id, data_len, data);
 	return id;
