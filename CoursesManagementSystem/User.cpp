@@ -1,21 +1,25 @@
 #include"DBManager.h"
 #include"User.h"
+#include"Course.h"
 
 #include<string>
 #include<iostream>
-#include<vector>
+#include<sstream>
+#include<list>
 using namespace std;
 
 User::User()
 {
-	id = -1;
+	this->id = -1;
+	this->courses = new list<int>();
 }
 
 User::User(string username, string password)
 {
+	this->id = -1;
 	this->username = username;
 	this->password = password;
-	this->id = -1;
+	this->courses = new list<int>();
 }
 
 void User::set_username(string username)
@@ -38,6 +42,36 @@ string User::get_password()
 	return password;
 }
 
+list<Course*>* User::get_courses()
+{
+	list<Course*>* c = new list<Course*>();
+	for(list<int>::iterator it = courses->begin(); it != courses->end(); it++)
+	{
+		int course_id = *it;
+		Course* course = Course::load(*it);
+		c->push_back(course);
+	}
+	return c;
+}
+
+void User::add_course(Course* course)
+{
+	if( find(courses->begin(), courses->end(), course->get_id()) == courses->end() )
+	{
+		courses->push_back(course->get_id());
+	}
+}
+
+void User::remove_course(int id)
+{
+	courses->remove(id);
+}
+
+void User::remove_course(Course* course)
+{
+	remove_course(course->get_id());
+}
+
 int User::get_id()
 {
 	return id;
@@ -47,7 +81,7 @@ User* User::load(int id)
 {
 	DBManager* db = DBManager::get_singleton();
 
-	int data_len = 2;
+	int data_len = 3;
 	string *data = new string[data_len];
 
 	User *user = new User();
@@ -56,6 +90,14 @@ User* User::load(int id)
 
 	user->set_username(data[0]);
 	user->set_password(data[1]);
+	stringstream ss;
+	ss << data[2];
+	int len; ss >> len;
+	for (int i = 0; i < len; i++)
+	{
+		int id; ss >> id;
+		user->courses->push_back(id);
+	}
 
 	return user;
 }
@@ -63,7 +105,7 @@ User* User::load(int id)
 User** User::loadAll()
 {
 	DBManager* db = DBManager::get_singleton();
-	int data_len = 2;
+	int data_len = 3;
 
 	string** users_data = db->loadAll("user", data_len);
 
@@ -82,6 +124,14 @@ User** User::loadAll()
 			user->id = i;
 			user->set_username(data[0]);
 			user->set_password(data[1]);
+			stringstream ss;
+			ss << data[2];
+			int len; ss >> len;
+			for (int i = 0; i < len; i++)
+			{
+				int id; ss >> id;
+				user->courses->push_back(id);
+			}
 		}
 		users[i] = user;
 	}
@@ -93,11 +143,18 @@ int User::save()
 {
 	DBManager* db = DBManager::get_singleton();
 
-	int data_len = 2;
+	int data_len = 3;
 	string *data = new string[data_len];
 
 	data[0] = username;
 	data[1] = password;
+	stringstream ss;
+	ss << courses->size();
+	for (auto it = courses->begin(); it != courses->end(); it++)
+	{
+		ss << " " << *it;
+	}
+	data[2] = ss.str();
 
 	id = db->store("user", id, data_len, data);
 	return id;

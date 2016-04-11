@@ -3,7 +3,8 @@
 
 #include<string>
 #include"DBManager.h"
-#include<vector>
+#include"Course.h"
+#include<list>
 using namespace std;
 
 class User
@@ -22,11 +23,16 @@ public:
 	string get_username();
 	string get_password();
 
+	list<Course*>* get_courses();
+	void add_course(Course* course);
+	void remove_course(int id);
+	void remove_course(Course* course);
+
 private:
 	int id;
 	string username;
 	string password;
-	vector<int> *courses;
+	list<int> *courses;
 
 };
 

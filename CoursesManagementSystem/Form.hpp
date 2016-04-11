@@ -50,6 +50,8 @@ void run_user_form()
 	cout << "	3- Retrieve user." << endl;
 	cout << "	4- Edit user." << endl;
 	cout << "	5- Delete user." << endl;
+	cout << "	6- Add course." << endl;
+	cout << "	7- Remove course." << endl;
 	int response = -1;
 	cin >> response; getline(cin, s);
 	if(response == 1)
@@ -97,8 +99,14 @@ void run_user_form()
 
 		cout << "Username: " << user->get_username() << endl;
 		cout << "Password: " << user->get_password() << endl;
+		cout << "Courses: ";
+		list<Course*> *courses = user->get_courses();
+		for(Course* c : *courses)
+			cout << " " << c->get_name() << ", ";
+		cout << endl;
 
 		delete user;
+		delete courses;
 	}
 	else if(response == 4)
 	{
@@ -129,6 +137,38 @@ void run_user_form()
 		user->trash();
 
 		delete user;
+	}
+	else if(response == 6)
+	{
+		cout << "Enter user id:";
+		int id; cin >> id; getline(cin, s);
+		User* user = User::load(id);
+
+		cout << "Enter course id:";
+		cin >> id; getline(cin, s);
+		Course* course = Course::load(id);
+
+		user->add_course(course);
+		user->save();
+
+		delete user;
+		delete course;
+	}
+	else if(response == 7)
+	{
+		cout << "Enter user id:";
+		int id; cin >> id; getline(cin, s);
+		User* user = User::load(id);
+
+		cout << "Enter course id:";
+		cin >> id; getline(cin, s);
+		Course* course = Course::load(id);
+
+		user->remove_course(course);
+		user->save();
+
+		delete user;
+		delete course;
 	}
 }
 

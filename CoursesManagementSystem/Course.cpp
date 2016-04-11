@@ -143,7 +143,6 @@ int Course::save()
 	{
 		ss << " " << *it;
 	}
-	ss << endl;
 	data[1] = ss.str();
 
 	id = db->store("course", id, data_len, data);
