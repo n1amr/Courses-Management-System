@@ -1,5 +1,5 @@
-#ifndef User_H
-#define User_H
+#ifndef _USER_H_
+#define _USER_H_
 
 #include<string>
 #include"DBManager.h"
