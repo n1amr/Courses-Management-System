@@ -3,5 +3,5 @@
 !*.cpp
 !*.h
 !*.hpp
-!database/*/*
 !CoursesManagementSystem/database/*/*
+!database/*/*
