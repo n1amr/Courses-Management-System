@@ -17,6 +17,7 @@ public:
 	void set_password(string password);
 	string get_username();
 	string get_password();
+	int get_id();
 	int save();
 	bool trash();
 

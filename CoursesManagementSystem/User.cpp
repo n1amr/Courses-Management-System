@@ -43,6 +43,11 @@ string User::get_password()
 	return password;
 }
 
+int User::get_id()
+{
+	return id;
+}
+
 User* User::load(int id)
 {
 	DBManager* db = DBManager::get_singleton();
