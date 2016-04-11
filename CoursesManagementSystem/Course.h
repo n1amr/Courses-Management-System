@@ -16,6 +16,7 @@ public:
 	int save();
 	bool trash();
 
+	int get_id();
 	void set_name(string name);
 	string get_name();
 

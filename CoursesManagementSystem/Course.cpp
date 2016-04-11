@@ -3,6 +3,7 @@
 
 #include<string>
 #include<iostream>
+#include<algorithm>
 using namespace std;
 
 Course::Course()
@@ -15,6 +16,10 @@ Course::Course(string name)
 	this->id = -1;
 	this->name = name;
 	this->prerequisites = new list<int>();
+	prerequisites = new list<int>();
+	prerequisites->push_back(2);
+	prerequisites->push_back(3);
+
 }
 
 void Course::set_name(string name)
@@ -29,12 +34,27 @@ string Course::get_name()
 
 list<Course*>* Course::get_prerequisites()
 {
-	return new list<Course*>(); //TODO
+	list<Course*>* l = new list<Course*>();
+	for(list<int>::iterator it = prerequisites->begin(); it != prerequisites->end(); it++)
+	{
+		int course_id = *it;
+		Course* course = Course::load(*it);
+		l->push_back(course);
+	}
+	return l;
 }
 
 void Course::add_prerequisites(Course* course)
 {
-	//TODO
+	if( find(prerequisites->begin(), prerequisites->end(), course->get_id()) != prerequisites->end() )
+	{
+		prerequisites->push_back(course->get_id());
+	}
+}
+
+int Course::get_id()
+{
+	return id;
 }
 
 Course* Course::load(int id)

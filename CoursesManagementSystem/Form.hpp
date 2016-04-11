@@ -6,6 +6,7 @@
 #include"Course.h"
 #include<iostream>
 #include<string>
+#include<list>
 using namespace std;
 
 void run_form();
@@ -141,6 +142,8 @@ void run_course_form()
 	cout << "	3- Retrieve course." << endl;
 	cout << "	4- Edit course." << endl;
 	cout << "	5- Delete course." << endl;
+	cout << "	6- View course prerequisites." << endl;
+	cout << "	7- Add course prerequisites." << endl;
 	int response = -1;
 	cin >> response; getline(cin, s);
 	if(response == 1)
@@ -212,6 +215,30 @@ void run_course_form()
 		delete course;
 	}
 	else if(response == 5)
+	{
+		cout << "Enter id:";
+		int id; cin >> id; getline(cin, s);
+
+		Course* course = Course::load(id);
+		course->trash();
+
+		delete course;
+	}
+	else if(response == 6)
+	{
+		cout << "Enter id:";
+		int id; cin >> id; getline(cin, s);
+
+		Course* course = Course::load(id);
+		list<Course*>* prerequisites = course->get_prerequisites();
+		for(Course* course : *prerequisites)
+		{
+			cout << "#" << course->get_id() << ": " << course->get_name() << endl;
+		}
+
+		delete course;
+	}
+	else if(response == 7)
 	{
 		cout << "Enter id:";
 		int id; cin >> id; getline(cin, s);

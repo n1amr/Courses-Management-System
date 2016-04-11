@@ -13,13 +13,14 @@ public:
 	User(string user, string pass);
 	static User* load(int id);
 	static User** loadAll();
+	int save();
+	bool trash();
+
+	int get_id();
 	void set_username(string username);
 	void set_password(string password);
 	string get_username();
 	string get_password();
-	int get_id();
-	int save();
-	bool trash();
 
 private:
 	int id;
