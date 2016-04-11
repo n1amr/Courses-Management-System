@@ -9,7 +9,6 @@ class Course
 {
 public:
 	Course();
-	Course(int id);
 	Course(string user, string pass);
 	static Course* load(int id);
 	static Course** loadAll();

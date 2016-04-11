@@ -9,7 +9,6 @@ class User
 {
 public:
 	User();
-	User(int id);
 	User(string user, string pass);
 	static User* load(int id);
 	static User** loadAll();

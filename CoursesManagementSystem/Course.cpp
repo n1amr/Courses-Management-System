@@ -10,12 +10,6 @@ Course::Course()
 	id = -1;
 }
 
-// TODO
-Course::Course(int id)
-{
-	this->id = id;
-}
-
 Course::Course(string username, string password)
 {
 	this->username = username;
@@ -50,7 +44,8 @@ Course* Course::load(int id)
 	int data_len = 2;
 	string *data = new string[data_len];
 
-	Course *course = new Course(id);
+	Course *course = new Course();
+	course->id = id;
 	data = db->load("course", id, data_len);
 
 	course->set_username(data[0]);

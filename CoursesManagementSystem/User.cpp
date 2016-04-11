@@ -10,12 +10,6 @@ User::User()
 	id = -1;
 }
 
-// TODO
-User::User(int id)
-{
-	this->id = id;
-}
-
 User::User(string username, string password)
 {
 	this->username = username;
@@ -55,7 +49,8 @@ User* User::load(int id)
 	int data_len = 2;
 	string *data = new string[data_len];
 
-	User *user = new User(id);
+	User *user = new User();
+	user->id = id;
 	data = db->load("user", id, data_len);
 
 	user->set_username(data[0]);
