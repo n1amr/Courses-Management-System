@@ -142,8 +142,8 @@ void run_course_form()
 	cout << "	3- Retrieve course." << endl;
 	cout << "	4- Edit course." << endl;
 	cout << "	5- Delete course." << endl;
-	cout << "	6- View course prerequisites." << endl;
-	cout << "	7- Add course prerequisites." << endl;
+	cout << "	6- Add course prerequisites." << endl;
+	cout << "	7- Remove course prerequisites." << endl;
 	int response = -1;
 	cin >> response; getline(cin, s);
 	if(response == 1)
@@ -158,8 +158,7 @@ void run_course_form()
 			if(course != NULL)
 			{
 				cout << "Course #" << i << endl;
-				cout << "Username: " << course->get_name() << endl;
-				// cout << "Password: " << course->get_password() << endl; //TODO
+				cout << "Name: " << course->get_name() << endl;
 				cout << endl;
 			}
 		}
@@ -172,10 +171,6 @@ void run_course_form()
 		getline(cin, s);
 		if(s.length() > 0)
 			course->set_name(s);
-		// cout << "Enter password:";
-		// getline(cin, s);
-		// if(s.length() > 0)
-		// 	course->set_password(s);
 
 		int id = course->save();
 		delete course;
@@ -190,7 +185,12 @@ void run_course_form()
 		Course* course = Course::load(id);
 
 		cout << "Course name: " << course->get_name() << endl;
-		// cout << "Password: " << course->get_password() << endl; //TODO
+		cout << "Prerequisite: " << endl;
+		list<Course*>* prerequisites = course->get_prerequisites();
+		for(Course* course : *prerequisites)
+		{
+			cout << "#" << course->get_id() << ": " << course->get_name() << endl;
+		}
 
 		delete course;
 	}
@@ -205,10 +205,6 @@ void run_course_form()
 		getline(cin, s);
 		if(s.length() > 0)
 			course->set_name(s);
-		// cout << "Edit password(" << course->get_password() << "):" ;
-		// getline(cin, s);
-		// if(s.length() > 0)
-		// 	course->set_password(s);
 
 		id = course->save();
 		cout << "Course was saved woth id #" << id << endl;
@@ -228,25 +224,33 @@ void run_course_form()
 	{
 		cout << "Enter id:";
 		int id; cin >> id; getline(cin, s);
-
 		Course* course = Course::load(id);
-		list<Course*>* prerequisites = course->get_prerequisites();
-		for(Course* course : *prerequisites)
-		{
-			cout << "#" << course->get_id() << ": " << course->get_name() << endl;
-		}
+
+		cout << "Enter prerequisite course id:";
+		cin >> id; getline(cin, s);
+		Course* course2 = Course::load(id);
+
+		course->add_prerequisite(course2);
+		course->save();
 
 		delete course;
+		delete course2;
 	}
 	else if(response == 7)
 	{
 		cout << "Enter id:";
 		int id; cin >> id; getline(cin, s);
-
 		Course* course = Course::load(id);
-		course->trash();
+
+		cout << "Enter prerequisite course id:";
+		cin >> id; getline(cin, s);
+		Course* course2 = Course::load(id);
+
+		course->remove_prerequisite(course2);
+		course->save();
 
 		delete course;
+		delete course2;
 	}
 }
 

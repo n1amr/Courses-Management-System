@@ -21,7 +21,9 @@ public:
 	string get_name();
 
 	list<Course*>* get_prerequisites();
-	void add_prerequisites(Course* course);
+	void add_prerequisite(Course* course);
+	void remove_prerequisite(int id);
+	void remove_prerequisite(Course* course);
 
 private:
 	int id;

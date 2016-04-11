@@ -4,11 +4,13 @@
 #include<string>
 #include<iostream>
 #include<algorithm>
+#include<sstream>
 using namespace std;
 
 Course::Course()
 {
 	this->id = -1;
+	this->prerequisites = new list<int>();
 }
 
 Course::Course(string name)
@@ -16,10 +18,6 @@ Course::Course(string name)
 	this->id = -1;
 	this->name = name;
 	this->prerequisites = new list<int>();
-	prerequisites = new list<int>();
-	prerequisites->push_back(2);
-	prerequisites->push_back(3);
-
 }
 
 void Course::set_name(string name)
@@ -44,12 +42,22 @@ list<Course*>* Course::get_prerequisites()
 	return l;
 }
 
-void Course::add_prerequisites(Course* course)
+void Course::add_prerequisite(Course* course)
 {
-	if( find(prerequisites->begin(), prerequisites->end(), course->get_id()) != prerequisites->end() )
+	if( find(prerequisites->begin(), prerequisites->end(), course->get_id()) == prerequisites->end() )
 	{
 		prerequisites->push_back(course->get_id());
 	}
+}
+
+void Course::remove_prerequisite(int id)
+{
+	prerequisites->remove(id);
+}
+
+void Course::remove_prerequisite(Course* course)
+{
+	remove_prerequisite(course->get_id());
 }
 
 int Course::get_id()
@@ -68,8 +76,17 @@ Course* Course::load(int id)
 	course->id = id;
 	data = db->load("course", id, data_len);
 
+	stringstream ss;
+
 	course->set_name(data[0]);
-	// course->set_password(data[1]); //TODO
+	ss << data[1];
+	int len; ss >> len;
+	for (int i = 0; i < len; i++)
+	{
+		int id;
+		ss >> id;
+		course->prerequisites->push_back(id);
+	}
 
 	return course;
 }
@@ -94,8 +111,17 @@ Course** Course::loadAll()
 		{
 			course = new Course();
 			course->id = i;
+
 			course->set_name(data[0]);
-			// course->set_password(data[1]); //TODO
+			stringstream ss;
+			ss << data[1];
+			int len; ss >> len;
+			for (int i = 0; i < len; i++)
+			{
+				int id;
+				ss >> id;
+				course->prerequisites->push_back(id);
+			}
 		}
 		courses[i] = course;
 	}
@@ -111,7 +137,14 @@ int Course::save()
 	string *data = new string[data_len];
 
 	data[0] = name;
-	// data[1] = password; // TODO
+	stringstream ss;
+	ss << prerequisites->size();
+	for (auto it = prerequisites->begin(); it != prerequisites->end(); it++)
+	{
+		ss << " " << *it;
+	}
+	ss << endl;
+	data[1] = ss.str();
 
 	id = db->store("course", id, data_len, data);
 	return id;
