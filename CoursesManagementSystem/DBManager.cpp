@@ -49,8 +49,6 @@ int DBManager::store(string table_name, int id, int data_len, string* data)
 
 string* DBManager::load(string table_name, int id, int data_len)
 {
-	bool new_row = (id == -1);
-
 	string s;
 	string* data = new string[data_len];
 

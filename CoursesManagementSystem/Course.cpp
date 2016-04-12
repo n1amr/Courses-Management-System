@@ -36,7 +36,7 @@ list<Course*>* Course::get_prerequisites()
 	for(list<int>::iterator it = prerequisites->begin(); it != prerequisites->end(); it++)
 	{
 		int course_id = *it;
-		Course* course = Course::load(*it);
+		Course* course = Course::load(course_id);
 		l->push_back(course);
 	}
 	return l;

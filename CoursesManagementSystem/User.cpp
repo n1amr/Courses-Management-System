@@ -49,7 +49,7 @@ list<Course*>* User::get_courses()
 	for(list<int>::iterator it = courses->begin(); it != courses->end(); it++)
 	{
 		int course_id = *it;
-		Course* course = Course::load(*it);
+		Course* course = Course::load(course_id);
 		c->push_back(course);
 	}
 	return c;
