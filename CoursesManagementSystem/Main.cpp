@@ -47,18 +47,13 @@ int main()
 		cout << "Select your password : ";
 		cin >> password;
 		reg.open("data\\users\\" + username + ".txt");
-		if (!reg)
-		{
-			cout << "you are registered before";
-		}
-		else
-		{
+		
 			//u->set_username(username);
 			//u->set_password(password)
 			reg << username << endl << password;
-			reg.close();
 			cout << "you have sucesifully registered !\n";
-		}
+		
+		reg.close();
 		main();
 
 	case 3:
