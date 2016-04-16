@@ -34,7 +34,7 @@ int main()
 	switch (choice)
 	{
 	
-    case 1:
+        case 1:
 		system("cls");
 		run_form();
 		system("cls");
