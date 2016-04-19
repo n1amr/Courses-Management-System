@@ -1,9 +1,9 @@
 #ifndef Node_H
 #define Node_H
-template<class T> class List
+template<class T>
 class Node
 {
-
+	
 public:
 	Node();
 	Node(T d);
@@ -12,11 +12,16 @@ public:
 	void SetNext(Node<T>* n);
 	T GetData();
 	Node* GetNext();
+	template<class T>
+	friend class List;
 private:
 	T data;
 	Node<T>* next;
-	friend class List<T>;
+
 };
 
-#include"Node.cpp"
+
+
+
+//#include"Node.cpp"
 #endif

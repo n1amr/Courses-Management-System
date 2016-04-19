@@ -1,7 +1,6 @@
 #include"LinkedList.h"
 #include<stdio.h>
 
-
 template<class T>
 List<T>::List()
 {
@@ -77,22 +76,22 @@ void List<T>::RemoveEnd()
 template<class T>
 int List<T>::Find(T d)
 {
-if (IsEmpty()) return -1;
-Node *tmp = head;
-int index = 0;
-while (tmp!=nullptr)
-{
+	if (IsEmpty()) return -1;
+	Node *tmp = head;
+	int index = 0;
+	while (tmp != nullptr)
+	{
 
-if (tmp->data == d)
-{
-return index;
-index++;
+		if (tmp->data == d)
+		{
+			return index;
+			index++;
 
-}
-tmp = tmp->next;
-index++;
-}
-return -1;
+		}
+		tmp = tmp->next;
+		index++;
+	}
+	return -1;
 }
 
 template<class T>
@@ -143,9 +142,9 @@ void List<T>::Remove(int index)
 template<class T>
 void List<T>::Removedata(T d)
 {
-int i;
-i= Find(d);
-Remove(i);
+	int i;
+	i = Find(d);
+	Remove(i);
 }
 
 template<class T>
@@ -161,7 +160,7 @@ void List<T>::PrintAll()
 }
 
 template<class T>
- Node* List<T>::peek()
+Node<T>* List<T>::peek()
 {
 	return head;
 }
@@ -207,4 +206,6 @@ List<T>::~List()
 {
 	clear();
 }
+
+
 

@@ -2,6 +2,7 @@
 #include"iostream"
 #include"fstream"
 #include"User.h"
+#include"LinkedList.h"
 using namespace std;
 
 
@@ -32,7 +33,7 @@ bool is_registered()
 
 int main()
 {
-	int choice;
+/*	int choice;
 	string username, password;
 	ofstream reg;
 	cout << "1- Admin\n2- Signup\n3- Signin\n4- Exit\n Your choice: ";
@@ -94,6 +95,9 @@ int main()
 	else
 	{
 		return 0;
-	}
-		
+	}*/
+/*	List<int> l;
+	l.AddFront(2);
+	l.PrintAll();*/
+
 }

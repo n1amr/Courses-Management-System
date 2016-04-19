@@ -33,4 +33,9 @@ private:
 	void helper(Node<T> *n);
 };
 
+
+
+
+
+//#include"LinkedList.cpp"
 #endif
