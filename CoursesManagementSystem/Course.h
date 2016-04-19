@@ -3,7 +3,8 @@
 
 #include<string>
 #include"DBManager.h"
-#include<list>
+#include"LinkedList.h"
+#include"Node.h"
 using namespace std;
 
 class Course
@@ -20,7 +21,7 @@ public:
 	void set_name(string name);
 	string get_name();
 
-	list<Course*>* get_prerequisites();
+	List<Course*>* get_prerequisites();
 	void add_prerequisite(Course* course);
 	void remove_prerequisite(int id);
 	void remove_prerequisite(Course* course);
@@ -28,7 +29,7 @@ public:
 private:
 	int id;
 	string name;
-	list<int> *prerequisites;
+	List<int> *prerequisites;
 
 };
 

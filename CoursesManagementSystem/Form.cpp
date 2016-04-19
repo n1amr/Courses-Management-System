@@ -5,7 +5,8 @@
 #include"Course.h"
 #include<iostream>
 #include<string>
-#include<list>
+#include"LinkedList.h"
+#include"Node.h"
 using namespace std;
 
 void run_form()
@@ -95,9 +96,12 @@ void run_user_form()
 		cout << "Username: " << user->get_username() << endl;
 		cout << "Password: " << user->get_password() << endl;
 		cout << "Courses: ";
-		list<Course*> *courses = user->get_courses();
-		for(Course* c : *courses)
+		List<Course*>* courses = user->get_courses();
+		for(Node<Course*>* it = courses->begin(); it != nullptr; it = it->GetNext())
+		{
+			Course* c = *(*it);
 			cout << " " << c->get_name() << ", ";
+		}
 		cout << endl;
 
 		delete user;
@@ -221,9 +225,10 @@ void run_course_form()
 
 		cout << "Course name: " << course->get_name() << endl;
 		cout << "Prerequisite: " << endl;
-		list<Course*>* prerequisites = course->get_prerequisites();
-		for(Course* course : *prerequisites)
+		List<Course*>* prerequisites = course->get_prerequisites();
+		for(Node<Course*>* it = prerequisites->begin(); it != nullptr; it = it->GetNext())
 		{
+			Course* course = *(*it);
 			cout << "#" << course->get_id() << ": " << course->get_name() << endl;
 		}
 

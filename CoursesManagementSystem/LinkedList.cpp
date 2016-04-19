@@ -84,12 +84,9 @@ int List<T>::find(T d)
 	int index = 0;
 	while (tmp != nullptr)
 	{
-
 		if (tmp->data == d)
 		{
 			return index;
-			index++;
-
 		}
 		tmp = tmp->next;
 		index++;
@@ -146,7 +143,7 @@ template<class T>
 void List<T>::remove(T d)
 {
 	int i;
-	i = Find(d);
+	i = find(d);
 	erase(i);
 }
 

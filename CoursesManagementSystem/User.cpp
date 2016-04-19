@@ -5,14 +5,14 @@
 #include<string>
 #include<iostream>
 #include<sstream>
-#include<algorithm>
-#include<list>
+#include"LinkedList.h"
+#include"Node.h"
 using namespace std;
 
 User::User()
 {
 	this->id = -1;
-	this->courses = new list<int>();
+	this->courses = new List<int>();
 }
 
 User::User(string username, string password)
@@ -20,7 +20,7 @@ User::User(string username, string password)
 	this->id = -1;
 	this->username = username;
 	this->password = password;
-	this->courses = new list<int>();
+	this->courses = new List<int>();
 }
 
 void User::set_username(string username)
@@ -43,12 +43,12 @@ string User::get_password()
 	return password;
 }
 
-list<Course*>* User::get_courses()
+List<Course*>* User::get_courses()
 {
-	list<Course*>* c = new list<Course*>();
-	for(list<int>::iterator it = courses->begin(); it != courses->end(); it++)
+	List<Course*>* c = new List<Course*>();
+	for(Node<int>* it = courses->begin(); it != nullptr; it = it->GetNext())
 	{
-		int course_id = *it;
+		int course_id = *(*it);
 		Course* course = Course::load(course_id);
 		c->push_back(course);
 	}
@@ -57,7 +57,7 @@ list<Course*>* User::get_courses()
 
 void User::add_course(Course* course)
 {
-	if( find(courses->begin(), courses->end(), course->get_id()) == courses->end() )
+	if( courses->find(course->get_id()) != -1 )
 	{
 		courses->push_back(course->get_id());
 	}
@@ -153,7 +153,7 @@ int User::save()
 	ss << courses->size();
 	for (auto it = courses->begin(); it != courses->end(); it++)
 	{
-		ss << " " << *it;
+		ss << " " << *(*it);
 	}
 	data[2] = ss.str();
 

@@ -3,21 +3,23 @@
 
 #include<string>
 #include<iostream>
-#include<algorithm>
 #include<sstream>
+#include"LinkedList.h"
+#include"Node.h"
+
 using namespace std;
 
 Course::Course()
 {
 	this->id = -1;
-	this->prerequisites = new list<int>();
+	this->prerequisites = new List<int>();
 }
 
 Course::Course(string name)
 {
 	this->id = -1;
 	this->name = name;
-	this->prerequisites = new list<int>();
+	this->prerequisites = new List<int>();
 }
 
 void Course::set_name(string name)
@@ -30,12 +32,12 @@ string Course::get_name()
 	return name;
 }
 
-list<Course*>* Course::get_prerequisites()
+List<Course*>* Course::get_prerequisites()
 {
-	list<Course*>* l = new list<Course*>();
-	for(list<int>::iterator it = prerequisites->begin(); it != prerequisites->end(); it++)
+	List<Course*>* l = new List<Course*>();
+	for(Node<int>* it = prerequisites->begin(); it != nullptr; it = it->GetNext())
 	{
-		int course_id = *it;
+		int course_id = *(*it);
 		Course* course = Course::load(course_id);
 		l->push_back(course);
 	}
@@ -44,7 +46,8 @@ list<Course*>* Course::get_prerequisites()
 
 void Course::add_prerequisite(Course* course)
 {
-	if( find(prerequisites->begin(), prerequisites->end(), course->get_id()) == prerequisites->end() )
+	// if( find(prerequisites->begin(), prerequisites->end(), course->get_id()) == prerequisites->end() )
+	if( prerequisites->find(course->get_id()) == -1 )
 	{
 		prerequisites->push_back(course->get_id());
 	}
@@ -139,9 +142,9 @@ int Course::save()
 	data[0] = name;
 	stringstream ss;
 	ss << prerequisites->size();
-	for (auto it = prerequisites->begin(); it != prerequisites->end(); it++)
+	for (Node<int>* it = prerequisites->begin(); it != nullptr; it = it->GetNext())
 	{
-		ss << " " << *it;
+		ss << " " << *(*it);
 	}
 	data[1] = ss.str();
 
