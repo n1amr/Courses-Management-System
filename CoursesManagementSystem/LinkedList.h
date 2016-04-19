@@ -1,11 +1,11 @@
+#ifndef _LIST_H_
+#define _LIST_H_
+
 #include "Node.h"
 using namespace std;
 
-#ifndef LinkedList_H
-#define LinkedList_H
 
-
-template<class T> 
+template<class T>
 class List
 {
 public:
@@ -33,9 +33,5 @@ private:
 	void helper(Node<T> *n);
 };
 
-
-
-
-
-//#include"LinkedList.cpp"
+#include"LinkedList.cpp"
 #endif

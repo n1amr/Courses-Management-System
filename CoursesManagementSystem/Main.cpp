@@ -5,49 +5,28 @@
 #include"LinkedList.h"
 using namespace std;
 
-
-bool is_registered()
-{
-	string username, password;
-	cout << "Enter your username: "; cin >> username;
-	cout << "Enter your password: "; cin >> password;
-	User** users = User::loadAll();
-	User *u = new User();
-	int count = DBManager::get_singleton()->get_last_id("user") + 1;
-	for (int i = 0; i < count; i++)
-	{
-		User *user = users[i];
-		if (user != nullptr)
-		{
-			if (username == user->get_username()&&password== user->get_password())
-			{
-				return true;
-			}
-			
-		}
-	}
-
-	
-	return false;
-}
+void clear_screen();
+bool is_registered();
 
 int main()
 {
-/*	int choice;
+	clear_screen();
+
+	int choice;
 	string username, password;
 	ofstream reg;
 	cout << "1- Admin\n2- Signup\n3- Signin\n4- Exit\n Your choice: ";
 	cin >> choice;
 	if (choice == 1)
 	{
-		system("cls");
+		clear_screen();
 		run_form();
-		system("cls");
+		clear_screen();
 		main();
 	}
 	else if (choice == 2)
 	{
-		system("cls");
+		clear_screen();
 		cout << "Select your username: ";
 		cin >> username;
 		cout << "Select your password : ";
@@ -78,8 +57,7 @@ int main()
 	}
 	else if (choice==3)
 	{
-
-		system("cls");
+		clear_screen();
 		if (!is_registered())
 		{
 			cout << "your username and password are not correct\n ";
@@ -88,16 +66,48 @@ int main()
 		else
 		{
 			cout << "you are successifully logged in \n";
-			return 1;
+			return 0;
 		}
-
 	}
 	else
 	{
 		return 0;
-	}*/
+	}
 /*	List<int> l;
 	l.AddFront(2);
 	l.PrintAll();*/
 
+}
+
+void clear_screen()
+{
+	#ifdef _WIN32
+  system("cls");
+  #endif
+	#ifdef __linux__
+  system("clear");
+  #endif
+}
+
+bool is_registered()
+{
+	string username, password;
+	cout << "Enter your username: "; cin >> username;
+	cout << "Enter your password: "; cin >> password;
+	User** users = User::loadAll();
+	User *u = new User();
+	int count = DBManager::get_singleton()->get_last_id("user") + 1;
+	for (int i = 0; i < count; i++)
+	{
+		User *user = users[i];
+		if (user != nullptr)
+		{
+			if (username == user->get_username()&&password== user->get_password())
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
 }

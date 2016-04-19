@@ -1,3 +1,6 @@
+#ifndef _LIST_CPP_
+#define _LIST_CPP_
+
 #include"LinkedList.h"
 #include<stdio.h>
 
@@ -9,7 +12,7 @@ List<T>::List()
 template<class T>
 List<T>::List(T d)
 {
-	head = new Node(d);
+	head = new Node<T>(d);
 }
 
 template<class T>
@@ -23,7 +26,7 @@ bool List<T>::IsEmpty()
 template<class T>
 void List<T>::AddFront(T d)
 {
-	Node *nw = new Node(d);
+	Node<T> *nw = new Node<T>(d);
 	nw->next = head;
 	head = nw;
 }
@@ -32,7 +35,7 @@ template<class T>
 void List<T>::RemoveFront()
 {
 	if (IsEmpty()) return;
-	Node *temp = head;
+	Node<T> *temp = head;
 	head = temp->next;
 	delete temp;
 }
@@ -45,10 +48,10 @@ void List<T>::AddEnd(T d)
 		AddFront(d);
 		return;
 	}
-	Node *temp = head; //initialization
+	Node<T> *temp = head; //initialization
 	while (temp->next != nullptr) //itteration till finding the end of list
 		temp = temp->next;
-	Node *nw = new Node(d);
+	Node<T> *nw = new Node<T>(d);
 	temp->next = nw;
 }
 template<class T>
@@ -60,8 +63,8 @@ void List<T>::RemoveEnd()
 		RemoveFront();
 		return;
 	}
-	Node *prev = head;
-	Node *last = prev->next;
+	Node<T> *prev = head;
+	Node<T> *last = prev->next;
 	while (last->next != nullptr)
 	{
 		last = last->next;
@@ -77,7 +80,7 @@ template<class T>
 int List<T>::Find(T d)
 {
 	if (IsEmpty()) return -1;
-	Node *tmp = head;
+	Node<T> *tmp = head;
 	int index = 0;
 	while (tmp != nullptr)
 	{
@@ -109,11 +112,11 @@ void List<T>::Add(T d, int index)
 		printf("you exceed the limit of list.. you can add index till index %d \n", size() - 1);
 		return;
 	}
-	Node* temp = head;
+	Node<T>* temp = head;
 	while (--index != 0)
 		temp = temp->next;
-	Node* temp2 = temp->next;
-	Node* nw = new Node(d);
+	Node<T>* temp2 = temp->next;
+	Node<T>* nw = new Node<T>(d);
 	temp->next = nw;
 	nw->next = temp2;
 }
@@ -128,8 +131,8 @@ void List<T>::Remove(int index)
 		RemoveFront();
 		return;
 	}
-	Node* prev = head;
-	Node* tmp = prev->next;
+	Node<T>* prev = head;
+	Node<T>* tmp = prev->next;
 	while (--index != 0)
 	{
 		tmp = tmp->next;
@@ -150,7 +153,7 @@ void List<T>::Removedata(T d)
 template<class T>
 void List<T>::PrintAll()
 {
-	Node* temp = head;
+	Node<T>* temp = head;
 	while (temp != nullptr)
 	{
 
@@ -192,7 +195,7 @@ template<class T>
 int List<T>::size()
 {
 	int size = 0;
-	Node *tmp = head;
+	Node<T> *tmp = head;
 	while (tmp != nullptr)
 	{
 		tmp = tmp->next;
@@ -207,5 +210,4 @@ List<T>::~List()
 	clear();
 }
 
-
-
+#endif
