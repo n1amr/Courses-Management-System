@@ -73,9 +73,6 @@ int main()
 	{
 		return 0;
 	}
-/*	List<int> l;
-	l.AddFront(2);
-	l.PrintAll();*/
 
 }
 

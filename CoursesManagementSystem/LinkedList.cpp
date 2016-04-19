@@ -1,5 +1,5 @@
-#ifndef _LIST_CPP_
-#define _LIST_CPP_
+#ifndef _List_CPP_
+#define _List_CPP_
 
 #include"LinkedList.h"
 #include<stdio.h>
@@ -16,7 +16,7 @@ List<T>::List(T d)
 }
 
 template<class T>
-bool List<T>::IsEmpty()
+bool List<T>::empty()
 {
 	if (head == nullptr)
 		return true;
@@ -24,7 +24,7 @@ bool List<T>::IsEmpty()
 }
 
 template<class T>
-void List<T>::AddFront(T d)
+void List<T>::push_front(T d)
 {
 	Node<T> *nw = new Node<T>(d);
 	nw->next = head;
@@ -32,35 +32,35 @@ void List<T>::AddFront(T d)
 }
 
 template<class T>
-void List<T>::RemoveFront()
+void List<T>::pop_front()
 {
-	if (IsEmpty()) return;
+	if (empty()) return;
 	Node<T> *temp = head;
 	head = temp->next;
 	delete temp;
 }
 
 template<class T>
-void List<T>::AddEnd(T d)
+void List<T>::push_back(T d)
 {
-	if (IsEmpty())
+	if (empty())
 	{
-		AddFront(d);
+		push_front(d);
 		return;
 	}
 	Node<T> *temp = head; //initialization
-	while (temp->next != nullptr) //itteration till finding the end of list
+	while (temp->next != nullptr) //itteration till finding the end of List
 		temp = temp->next;
 	Node<T> *nw = new Node<T>(d);
 	temp->next = nw;
 }
 template<class T>
-void List<T>::RemoveEnd()
+void List<T>::pop_back()
 {
-	if (IsEmpty()) return;
+	if (empty()) return;
 	if (head->next == nullptr)
 	{
-		RemoveFront();
+		pop_front();
 		return;
 	}
 	Node<T> *prev = head;
@@ -77,9 +77,9 @@ void List<T>::RemoveEnd()
 
 
 template<class T>
-int List<T>::Find(T d)
+int List<T>::find(T d)
 {
-	if (IsEmpty()) return -1;
+	if (empty()) return -1;
 	Node<T> *tmp = head;
 	int index = 0;
 	while (tmp != nullptr)
@@ -98,18 +98,18 @@ int List<T>::Find(T d)
 }
 
 template<class T>
-void List<T>::Add(T d, int index)
+void List<T>::insert(T d, int index)
 {
 	if (index < 0)
 		return;
 	if (index == 0)
 	{
-		AddFront(d);
+		push_front(d);
 		return;
 	}
 	if (index> size() - 1)
 	{
-		printf("you exceed the limit of list.. you can add index till index %d \n", size() - 1);
+		printf("you exceed the limit of List.. you can add index till index %d \n", size() - 1);
 		return;
 	}
 	Node<T>* temp = head;
@@ -122,13 +122,13 @@ void List<T>::Add(T d, int index)
 }
 
 template<class T>
-void List<T>::Remove(int index)
+void List<T>::erase(int index)
 {
-	if (IsEmpty()) return;
+	if (empty()) return;
 	if (index < 0) return;
 	if (index == 0)
 	{
-		RemoveFront();
+		pop_front();
 		return;
 	}
 	Node<T>* prev = head;
@@ -143,7 +143,7 @@ void List<T>::Remove(int index)
 }
 
 template<class T>
-void List<T>::Removedata(T d)
+void List<T>::remove(T d)
 {
 	int i;
 	i = Find(d);
@@ -151,7 +151,7 @@ void List<T>::Removedata(T d)
 }
 
 template<class T>
-void List<T>::PrintAll()
+void List<T>::print_all()
 {
 	Node<T>* temp = head;
 	while (temp != nullptr)
@@ -163,15 +163,15 @@ void List<T>::PrintAll()
 }
 
 template<class T>
-Node<T>* List<T>::GetFirst()
+Node<T>* List<T>::begin()
 {
 	return head;
 }
 
 template<class T>
-Node<T>* List<T>::GetLast()
+Node<T>* List<T>::end()
 {
-	if(IsEmpty())
+	if(empty())
 		return nullptr;
 
 	Node<T>* tmp = head;
@@ -199,8 +199,8 @@ void List<T>::PrintAllRec()
 template<class T>
 void List<T>::clear()
 {
-	while (!IsEmpty())
-		RemoveFront();
+	while (!empty())
+		pop_front();
 }
 
 template<class T>
