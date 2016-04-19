@@ -1,4 +1,4 @@
-#include"Form.h"
+#include"AdminForm.h"
 
 #include"DBManager.h"
 #include"User.h"
