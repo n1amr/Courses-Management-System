@@ -21,7 +21,8 @@ public:
 	void Remove(int index);
 	void Removedata(T d);
 	//	string peek();
-	Node<T>* peek();
+	Node<T>* GetFirst();
+	Node<T>* GetLast();
 	void PrintAll();
 	void PrintAllRec();
 	void clear();

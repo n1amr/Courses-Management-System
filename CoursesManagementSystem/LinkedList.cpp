@@ -163,9 +163,21 @@ void List<T>::PrintAll()
 }
 
 template<class T>
-Node<T>* List<T>::peek()
+Node<T>* List<T>::GetFirst()
 {
 	return head;
+}
+
+template<class T>
+Node<T>* List<T>::GetLast()
+{
+	if(IsEmpty())
+		return nullptr;
+
+	Node<T>* tmp = head;
+	while(tmp->GetNext() != nullptr)
+		tmp = tmp->GetNext();
+	return tmp;
 }
 
 template<class T>
