@@ -147,7 +147,7 @@ void List<T>::remove(T d)
 {
 	int i;
 	i = Find(d);
-	Remove(i);
+	erase(i);
 }
 
 template<class T>
@@ -156,7 +156,6 @@ void List<T>::print_all()
 	Node<T>* temp = head;
 	while (temp != nullptr)
 	{
-
 		printf("%d \n", temp->data);
 		temp = temp->next;
 	}
