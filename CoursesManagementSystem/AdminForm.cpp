@@ -3,28 +3,13 @@
 #include"DBManager.h"
 #include"User.h"
 #include"Course.h"
+#include"UserManager.h"
+#include"CourseManager.h"
 #include<iostream>
 #include<string>
-#include"LinkedList.h"
-#include"Node.h"
 using namespace std;
 
-void list_users();
-void create_new_user();
-void view_user();
-void edit_user();
-void delete_user();
-void view_user_courses();
-void remove_user_course();
-void list_courses();
-void create_new_course();
-void view_course();
-void edit_course();
-void delete_course();
-void add_course_prerequisites();
-void remove_course_prerequisites();
-
-void run_form()
+void AdminForm::run_form()
 {
 	string s;
 	while(true)
@@ -47,7 +32,7 @@ void run_form()
 	}
 }
 
-void run_user_form()
+void AdminForm::run_user_form()
 {
 	string s;
 
@@ -72,12 +57,12 @@ void run_user_form()
 	else if(response == 5)
 		delete_user();
 	else if(response == 6)
-		view_user_courses();
+		add_user_course();
 	else if(response == 7)
 		remove_user_course();
 }
 
-void run_course_form()
+void AdminForm::run_course_form()
 {
 	string s;
 
@@ -107,68 +92,37 @@ void run_course_form()
 		remove_course_prerequisites();
 }
 
-void list_users()
+void AdminForm::list_users()
 {
-	User** users = User::loadAll();
-
-	int count = DBManager::get_singleton()->get_last_id("user") + 1;
-
-	for(int i = 0; i < count; i++)
-	{
-		User *user = users[i];
-		if(user != NULL)
-		{
-			cout << "User #" << i << endl;
-			cout << "Username: " << user->get_username() << endl;
-			cout << "Password: " << user->get_password() << endl;
-			cout << endl;
-		}
-	}
+	UserManager::list_users();
 }
 
-void create_new_user()
+void AdminForm::create_new_user()
 {
-	User* user = new User();
+	string username, password;
 
 	cout << "Enter username:";
-	getline(cin, s);
-	if(s.length() > 0)
-		user->set_username(s);
+	getline(cin, username);
 	cout << "Enter password:";
-	getline(cin, s);
-	if(s.length() > 0)
-		user->set_password(s);
+	getline(cin, password);
 
-	int id = user->save();
-	delete user;
+	int id = UserManager::create_new_user(username, password);
 
 	cout << "User was saved woth id #" << id << endl;
 }
 
-void view_user()
+void AdminForm::view_user()
 {
+	string s;
 	cout << "Enter id:";
 	int id; cin >> id; getline(cin, s);
 
-	User* user = User::load(id);
-
-	cout << "Username: " << user->get_username() << endl;
-	cout << "Password: " << user->get_password() << endl;
-	cout << "Courses: ";
-	List<Course*>* courses = user->get_courses();
-	for(Node<Course*>* it = courses->begin(); it != nullptr; it = it->GetNext())
-	{
-		Course* c = *(*it);
-		cout << " " << c->get_name() << ", ";
-	}
-	cout << endl;
-
-	delete user;
-	delete courses;
+	UserManager::view_user(id);
 }
 
-void edit_user()
+void AdminForm::edit_user()
 {
+	string s;
 	cout << "Enter id:";
 	int id; cin >> id; getline(cin, s);
 
@@ -188,103 +142,67 @@ void edit_user()
 	delete user;
 }
 
-void delete_user()
+void AdminForm::delete_user()
 {
+	string s;
 	cout << "Enter id:";
 	int id; cin >> id; getline(cin, s);
 
-	User* user = User::load(id);
-	user->trash();
-
-	delete user;
+	UserManager::delete_user(id);
 }
 
-void view_user_courses()
+void AdminForm::add_user_course()
 {
+	string s;
 	cout << "Enter user id:";
-	int id; cin >> id; getline(cin, s);
-	User* user = User::load(id);
+	int user_id; cin >> user_id; getline(cin, s);
 
 	cout << "Enter course id:";
-	cin >> id; getline(cin, s);
-	Course* course = Course::load(id);
+	int course_id; cin >> course_id; getline(cin, s);
 
-	user->add_course(course);
-	user->save();
-
-	delete user;
-	delete course;
+	UserManager::add_user_course(user_id, course_id);
 }
 
-void remove_user_course()
+void AdminForm::remove_user_course()
 {
+	string s;
 	cout << "Enter user id:";
-	int id; cin >> id; getline(cin, s);
-	User* user = User::load(id);
+	int user_id; cin >> user_id; getline(cin, s);
 
 	cout << "Enter course id:";
-	cin >> id; getline(cin, s);
-	Course* course = Course::load(id);
+	int course_id; cin >> course_id; getline(cin, s);
 
-	user->remove_course(course);
-	user->save();
-
-	delete user;
-	delete course;
+	UserManager::remove_user_course(user_id, course_id);
 }
 
-void list_courses()
+void AdminForm::list_courses()
 {
-	Course** courses = Course::loadAll();
-
-	int count = DBManager::get_singleton()->get_last_id("course") + 1;
-
-	for(int i = 0; i < count; i++)
-	{
-		Course *course = courses[i];
-		if(course != NULL)
-		{
-			cout << "Course #" << i << endl;
-			cout << "Name: " << course->get_name() << endl;
-			cout << endl;
-		}
-	}
+	CourseManager::list_courses();
 }
 
-void create_new_course();
-	Course* course = new Course();
-
+void AdminForm::create_new_course()
+{
+	string course_name;
 	cout << "Enter course name:";
-	getline(cin, s);
-	if(s.length() > 0)
-		course->set_name(s);
+	getline(cin, course_name);
 
-	int id = course->save();
-	delete course;
+	int id = CourseManager::create_new_course(course_name);
 
 	cout << "Course was saved woth id #" << id << endl;
 }
 
-void view_course()
+void AdminForm::view_course()
 {
+	string s;
 	cout << "Enter id:";
 	int id; cin >> id; getline(cin, s);
 
-	Course* course = Course::load(id);
-
-	cout << "Course name: " << course->get_name() << endl;
-	cout << "Prerequisite: " << endl;
-	List<Course*>* prerequisites = course->get_prerequisites();
-	for(Node<Course*>* it = prerequisites->begin(); it != nullptr; it = it->GetNext())
-	{
-		Course* course = *(*it);
-		cout << "#" << course->get_id() << ": " << course->get_name() << endl;
-	}
-	delete course;
+	CourseManager::view_course(id);
 }
 
-void edit_course()
+void AdminForm::edit_course()
 {
+	string s;
 	cout << "Enter id:";
 	int id; cin >> id; getline(cin, s);
 
@@ -300,48 +218,35 @@ void edit_course()
 	delete course;
 }
 
-void delete_course()
+void AdminForm::delete_course()
 {
-	add_course_prerequisites();
+	string s;
 	cout << "Enter id:";
 	int id; cin >> id; getline(cin, s);
 
-	Course* course = Course::load(id);
-	course->trash();
-
-	delete course;
+	CourseManager::delete_course(id);
 }
 
-void add_course_prerequisites()
+void AdminForm::add_course_prerequisites()
 {
+	string s;
 	cout << "Enter id:";
-	int id; cin >> id; getline(cin, s);
-	Course* course = Course::load(id);
+	int course_id; cin >> course_id; getline(cin, s);
 
 	cout << "Enter prerequisite course id:";
-	cin >> id; getline(cin, s);
-	Course* course2 = Course::load(id);
+	int prerequisite_course_id; cin >> prerequisite_course_id; getline(cin, s);
 
-	course->add_prerequisite(course2);
-	course->save();
-
-	delete course;
-	delete course2;
+	CourseManager::add_course_prerequisites(course_id, prerequisite_course_id);
 }
 
-void remove_course_prerequisites()
+void AdminForm::remove_course_prerequisites()
 {
+	string s;
 	cout << "Enter id:";
-	int id; cin >> id; getline(cin, s);
-	Course* course = Course::load(id);
+	int course_id; cin >> course_id; getline(cin, s);
 
 	cout << "Enter prerequisite course id:";
-	cin >> id; getline(cin, s);
-	Course* course2 = Course::load(id);
+	int prerequisite_course_id; cin >> prerequisite_course_id; getline(cin, s);
 
-	course->remove_prerequisite(course2);
-	course->save();
-
-	delete course;
-	delete course2;
+	CourseManager::remove_course_prerequisites(course_id, prerequisite_course_id);
 }

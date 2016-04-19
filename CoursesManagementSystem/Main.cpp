@@ -1,8 +1,10 @@
 #include"AdminForm.h"
+#include"UserManager.h"
+#include"CourseManager.h"
+#include"Course.h"
+#include"User.h"
 #include"iostream"
 #include"fstream"
-#include"User.h"
-#include"LinkedList.h"
 using namespace std;
 
 void clear_screen();
@@ -20,7 +22,7 @@ int main()
 	if (choice == 1)
 	{
 		clear_screen();
-		run_form();
+		AdminForm::run_form();
 		clear_screen();
 		main();
 	}
@@ -92,7 +94,6 @@ bool is_registered()
 	cout << "Enter your username: "; cin >> username;
 	cout << "Enter your password: "; cin >> password;
 	User** users = User::loadAll();
-	User *u = new User();
 	int count = DBManager::get_singleton()->get_last_id("user") + 1;
 	for (int i = 0; i < count; i++)
 	{
