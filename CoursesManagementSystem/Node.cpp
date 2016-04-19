@@ -42,4 +42,10 @@ void Node<T>::SetNext(Node<T>*n)
 	next = n;
 }
 
+template<class T>
+T Node<T>::operator*()
+{
+	return GetData();
+}
+
 #endif

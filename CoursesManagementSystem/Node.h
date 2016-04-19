@@ -14,6 +14,7 @@ public:
 	Node* GetNext();
 	template<class LIST_T>
 	friend class List;
+	T operator*();
 
 private:
 	T data;
