@@ -36,6 +36,7 @@ int main()
 		User** users = User::loadAll();
 		User *u = new User();
 		int count = DBManager::get_singleton()->get_last_id("user") + 1;
+		bool found = false;
 		for (int i = 0; i < count; i++)
 		{
 			User *user = users[i];
@@ -43,16 +44,21 @@ int main()
 			{
 				if (username == user->get_username())
 				{
-					cout << "Sorry,you already registered before\n";
-				}
-				else
-				{
-					u->set_username(username);
-					u->set_password(password);
-					u->save();
-					cout << "you have sucessifully registered !\n";
+					found = true;
+					break;
 				}
 			}
+		}
+		if (found)
+		{
+			cout << "Sorry,you already registered before\n";
+		}
+		else
+		{
+			u->set_username(username);
+			u->set_password(password);
+			u->save();
+			cout << "you have sucessifully registered !\n";
 		}
 
 		main();
