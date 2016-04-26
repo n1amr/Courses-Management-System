@@ -13,14 +13,12 @@ void clear_screen();
 User* is_registered(string username,string password);
 
 void signup();
+void signin();
 
 int main() {
 	clear_screen();
 
 	int choice;
-	string username, password;
-	ofstream reg;
-
 	while (true) {
 		cout << "1- Admin\n2- Signup\n3- Signin\n4- Exit\n Your choice: ";
 		cin >> choice;
@@ -34,29 +32,34 @@ int main() {
 			signup();
 		}
 		else if (choice == 3) {
-			clear_screen();
-			string username, password;
-			cout << "Enter your username: ";
-			cin >> username;
-			cout << "Enter your password: ";
-			cin >> password;
-			User *user = is_registered(username, password);
-			if (user == nullptr) {
-				cout << "your username and password are not correct\n ";
-			}
-			else {
-				cout << "you are successfully logged in \n";
-				UserForm userForm(user);
-				userForm.run_form();
-			}
-		}
+signin();		}
 		else {
 			return 0;
 		}
 	}
 }
 
+void signin() {
+	clear_screen();
+	string username, password;
+	cout << "Enter your username: ";
+	cin >> username;
+	cout << "Enter your password: ";
+	cin >> password;
+	User *user = is_registered(username, password);
+	if (user == nullptr) {
+		cout << "your username and password are not correct\n ";
+	}
+	else {
+		cout << "you are successfully logged in \n";
+		UserForm userForm(user);
+		userForm.run_form();
+	}
+}
+
 void signup() {
+	clear_screen();
+
 	string username, password;
 	clear_screen();
 	cout << "Select your username: ";
