@@ -1,45 +1,44 @@
 #include"AdminForm.h"
 #include"UserManager.h"
-#include"CourseManager.h"
 #include"Course.h"
 #include"User.h"
 #include"iostream"
-#include"fstream"
 #include "UserForm.h"
 
 using namespace std;
 
 void clear_screen();
-User* is_registered(string username,string password);
-
+User* is_registered(string username, string password);
 void signup();
 void signin();
 
-int main() {
+int main()
+{
 	clear_screen();
 
 	int choice;
-	while (true) {
+	while (true)
+	{
 		cout << "1- Admin\n2- Signup\n3- Signin\n4- Exit\n Your choice: ";
 		cin >> choice;
-		if (choice == 1) {
+		if (choice == 1)
+		{
 			clear_screen();
 			AdminForm::run_form();
 			clear_screen();
 			main();
 		}
-		else if (choice == 2) {
+		else if (choice == 2)
 			signup();
-		}
-		else if (choice == 3) {
-signin();		}
-		else {
+		else if (choice == 3)
+			signin();
+		else
 			return 0;
-		}
 	}
 }
 
-void signin() {
+void signin()
+{
 	clear_screen();
 	string username, password;
 	cout << "Enter your username: ";
@@ -47,17 +46,18 @@ void signin() {
 	cout << "Enter your password: ";
 	cin >> password;
 	User *user = is_registered(username, password);
-	if (user == nullptr) {
+	if (user == nullptr)
 		cout << "your username and password are not correct\n ";
-	}
-	else {
+	else
+	{
 		cout << "you are successfully logged in \n";
 		UserForm userForm(user);
 		userForm.run_form();
 	}
 }
 
-void signup() {
+void signup()
+{
 	clear_screen();
 
 	string username, password;
@@ -70,50 +70,45 @@ void signup() {
 	User *u = new User();
 	int count = DBManager::get_singleton()->get_last_id("user") + 1;
 	bool found = false;
-	for (int i = 0; i < count; i++) {
+	for (int i = 0; i < count; i++)
+	{
 		User *user = users[i];
-		if (user != nullptr) {
-			if (username == user->get_username()) {
-				found = true;
-				break;
-			}
+		if (user != nullptr && username == user->get_username())
+		{
+			found = true;
+			break;
 		}
 	}
-	if (found) {
+	if (found)
 		cout << "Sorry,you already registered before\n";
-	}
-	else {
+	else
+	{
 		u->set_username(username);
 		u->set_password(password);
 		u->save();
-		cout << "you have sucessifully registered !\n";
+		cout << "you have successfully registered !\n";
 	}
 }
 
 void clear_screen()
 {
-	#ifdef _WIN32
-  system("cls");
-  #endif
-	#ifdef __linux__
-  system("clear");
-  #endif
+#ifdef _WIN32
+	system("cls");
+#endif
+#ifdef __linux__
+	system("clear");
+#endif
 }
 
-User* is_registered(string username,string password)
+User *is_registered(string username, string password)
 {
-	User** users = User::loadAll();
+	User **users = User::loadAll();
 	int count = DBManager::get_singleton()->get_last_id("user") + 1;
 	for (int i = 0; i < count; i++)
 	{
 		User *user = users[i];
-		if (user != nullptr)
-		{
-			if (username == user->get_username()&&password== user->get_password())
-			{
+		if (user != nullptr && username == user->get_username() && password == user->get_password())
 				return user;
-			}
-		}
 	}
 
 	return nullptr;
