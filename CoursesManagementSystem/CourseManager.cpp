@@ -23,16 +23,14 @@ using namespace std;
 
 void CourseManager::list_courses()
 {
-	Course** courses = Course::loadAll();
+	List<Course*>* courses = Course::loadAll();
 
-	int count = DBManager::get_singleton()->get_last_id("course") + 1;
-
-	for(int i = 0; i < count; i++)
+	for(Node<Course*>* it = courses->begin(); it != nullptr; it = it->GetNext())
 	{
-		Course *course = courses[i];
+		Course *course = *(*it);
 		if(course != NULL)
 		{
-			cout << "Course #" << i << endl;
+			cout << "Course #" << course->get_id() << endl;
 			cout << "Name: " << course->get_name() << endl;
 			cout << endl;
 		}

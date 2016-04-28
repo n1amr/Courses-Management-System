@@ -78,21 +78,17 @@ int User::get_id()
 	return id;
 }
 
-User* User::load(int id)
+User *User::load(string *data)
 {
-	DBManager* db = DBManager::get_singleton();
-
-	int data_len = 3;
-	string *data = new string[data_len];
-
 	User *user = new User();
-	user->id = id;
-	data = db->load("user", id, data_len);
 
-	user->set_username(data[0]);
-	user->set_password(data[1]);
+	int data_len = 4;
+
+	user->id = atoi(data[0].c_str());
+	user->set_username(data[1]);
+	user->set_password(data[2]);
 	stringstream ss;
-	ss << data[2];
+	ss << data[3];
 	int len; ss >> len;
 	for (int i = 0; i < len; i++)
 	{
@@ -103,38 +99,29 @@ User* User::load(int id)
 	return user;
 }
 
-User** User::loadAll()
+
+User* User::load(int id)
 {
 	DBManager* db = DBManager::get_singleton();
-	int data_len = 3;
 
-	string** users_data = db->loadAll("user", data_len);
+	int data_len = 4;
+	string *data = db->load("user", id, data_len);
+	return load(data);
+}
 
-	int count = db->get_last_id("user") + 1;
-	string s;
+List<User*>* User::loadAll()
+{
+	DBManager* db = DBManager::get_singleton();
+	int data_len = 4;
 
-	User** users = new User*[count];
-	for(int i = 0; i < count; i++)
+	List<string*>* users_data = db->loadAll("user", data_len);
+
+	List<User*>* users = new List<User*>();
+	for(Node<string*>* it = users_data->begin(); it != nullptr; it = it->GetNext())
 	{
-		string *data = users_data[i];
-
-		User *user = NULL;
-		if(data != NULL)
-		{
-			user = new User();
-			user->id = i;
-			user->set_username(data[0]);
-			user->set_password(data[1]);
-			stringstream ss;
-			ss << data[2];
-			int len; ss >> len;
-			for (int i = 0; i < len; i++)
-			{
-				int id; ss >> id;
-				user->courses->push_back(id);
-			}
-		}
-		users[i] = user;
+		string *data = *(*it);
+		User *user = load(data);
+		users->push_back(user);
 	}
 
 	return users;
@@ -144,18 +131,19 @@ int User::save()
 {
 	DBManager* db = DBManager::get_singleton();
 
-	int data_len = 3;
+	int data_len = 4;
 	string *data = new string[data_len];
 
-	data[0] = username;
-	data[1] = password;
+	//data[0] = to_string(id); // Skip
+	data[1] = username;
+	data[2] = password;
 	stringstream ss;
 	ss << courses->size();
 	for (auto it = courses->begin(); it != courses->end(); it++)
 	{
 		ss << " " << *(*it);
 	}
-	data[2] = ss.str();
+	data[3] = ss.str();
 
 	id = db->store("user", id, data_len, data);
 	return id;

@@ -8,8 +8,11 @@
 using namespace std;
 
 void clear_screen();
-User* is_registered(string username, string password);
+
+User *is_registered(string username, string password);
+
 void signup();
+
 void signin();
 
 int main()
@@ -66,13 +69,13 @@ void signup()
 	cin >> username;
 	cout << "Select your password : ";
 	cin >> password;
-	User **users = User::loadAll();
+	List<User*>* users = User::loadAll();
 	User *u = new User();
-	int count = DBManager::get_singleton()->get_last_id("user") + 1;
+
 	bool found = false;
-	for (int i = 0; i < count; i++)
+	for(Node<User*>* it = users->begin(); it != nullptr; it = it->GetNext())
 	{
-		User *user = users[i];
+		User *user = *(*it);
 		if (user != nullptr && username == user->get_username())
 		{
 			found = true;
@@ -102,13 +105,12 @@ void clear_screen()
 
 User *is_registered(string username, string password)
 {
-	User **users = User::loadAll();
-	int count = DBManager::get_singleton()->get_last_id("user") + 1;
-	for (int i = 0; i < count; i++)
+	List<User*>* users = User::loadAll();
+	for(Node<User*>* it = users->begin(); it != nullptr; it = it->GetNext())
 	{
-		User *user = users[i];
+		User *user = *(*it);
 		if (user != nullptr && username == user->get_username() && password == user->get_password())
-				return user;
+			return user;
 	}
 
 	return nullptr;

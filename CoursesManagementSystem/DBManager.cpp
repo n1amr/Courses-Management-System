@@ -1,4 +1,5 @@
 #include"DBManager.h"
+#include "LinkedList.h"
 
 #include<stdio.h>
 #include<string>
@@ -35,7 +36,8 @@ int DBManager::store(string table_name, int id, int data_len, string* data)
 
 	// Write entry data into file
 	ofstream fout(get_entry_filename(table_name, id));
-	for(int i = 0; i < data_len; i++)
+	fout << id << endl;
+	for(int i = 1; i < data_len; i++)
 		fout << data[i] << endl;
 	fout.close();
 
@@ -61,18 +63,18 @@ string* DBManager::load(string table_name, int id, int data_len)
 	return data;
 }
 
-string** DBManager::loadAll(string table_name, int data_len)
+List<string*>* DBManager::loadAll(string table_name, int data_len)
 {
 	int last_id = get_last_id(table_name);
 
-	string **rows = new string*[last_id + 1];
-	for(int i = 0; i < last_id + 1; i++)
-		rows[i] = NULL;
+	List<string*>* rows = new List<string*>();
+//	for(int i = 0; i < last_id + 1; i++)
+//		rows[i] = NULL;
 
 	for(int id = 0; id <= last_id; id++)
 	{
 		if(file_exists(get_entry_filename(table_name, id)))
-			rows[id] = load(table_name, id, data_len);
+			rows->push_back(load(table_name, id, data_len));
 	}
 
 	return rows;

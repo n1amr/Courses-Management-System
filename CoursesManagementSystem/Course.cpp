@@ -68,21 +68,15 @@ int Course::get_id()
 	return id;
 }
 
-Course* Course::load(int id)
+Course* Course::load(string *data)
 {
-	DBManager* db = DBManager::get_singleton();
-
-	int data_len = 2;
-	string *data = new string[data_len];
-
 	Course *course = new Course();
-	course->id = id;
-	data = db->load("course", id, data_len);
 
 	stringstream ss;
 
-	course->set_name(data[0]);
-	ss << data[1];
+	course->id = atoi(data[0].c_str());
+	course->set_name(data[1]);
+	ss << data[2];
 	int len; ss >> len;
 	for (int i = 0; i < len; i++)
 	{
@@ -94,39 +88,30 @@ Course* Course::load(int id)
 	return course;
 }
 
-Course** Course::loadAll()
+Course* Course::load(int id)
 {
 	DBManager* db = DBManager::get_singleton();
-	int data_len = 2;
 
-	string** courses_data = db->loadAll("course", data_len);
+	int data_len = 3;
+	string *data = db->load("course", id, data_len);
 
-	int count = db->get_last_id("course") + 1;
-	string s;
+	Course *course = load(data);
+	return course;
+}
 
-	Course** courses = new Course*[count];
-	for(int i = 0; i < count; i++)
+List<Course*>* Course::loadAll()
+{
+	DBManager* db = DBManager::get_singleton();
+	int data_len = 3;
+
+	List<string*>* courses_data = db->loadAll("course", data_len);
+
+	List<Course*>* courses = new List<Course*>();
+	for(Node<string*>* it =courses_data->begin(); it != nullptr; it= it->GetNext())
 	{
-		string *data = courses_data[i];
-
-		Course *course = NULL;
-		if(data != NULL)
-		{
-			course = new Course();
-			course->id = i;
-
-			course->set_name(data[0]);
-			stringstream ss;
-			ss << data[1];
-			int len; ss >> len;
-			for (int i = 0; i < len; i++)
-			{
-				int id;
-				ss >> id;
-				course->prerequisites->push_back(id);
-			}
-		}
-		courses[i] = course;
+		string *data = *(*it);
+		Course *course = load(data);
+		courses->push_back(course);
 	}
 
 	return courses;
@@ -139,14 +124,15 @@ int Course::save()
 	int data_len = 2;
 	string *data = new string[data_len];
 
-	data[0] = name;
+//	data[0] = to_string(id); // Skip
+	data[1] = name;
 	stringstream ss;
 	ss << prerequisites->size();
 	for (Node<int>* it = prerequisites->begin(); it != nullptr; it = it->GetNext())
 	{
 		ss << " " << *(*it);
 	}
-	data[1] = ss.str();
+	data[2] = ss.str();
 
 	id = db->store("course", id, data_len, data);
 	return id;
@@ -157,3 +143,4 @@ bool Course::trash()
 	DBManager* db = DBManager::get_singleton();
 	return db->trash("course", id);
 }
+

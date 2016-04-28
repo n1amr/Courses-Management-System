@@ -13,16 +13,14 @@ using namespace std;
 
 void UserManager::list_users()
 {
-	User** users = User::loadAll();
+	List<User*>* users = User::loadAll();
 
-	int count = DBManager::get_singleton()->get_last_id("user") + 1;
-
-	for(int i = 0; i < count; i++)
+	for(Node<User*> *it = users->begin(); it != nullptr; it = it->GetNext())
 	{
-		User *user = users[i];
+		User *user = *(*it);
 		if(user != NULL)
 		{
-			cout << "User #" << i << endl;
+			cout << "User #" << user->get_id() << endl;
 			cout << "Username: " << user->get_username() << endl;
 			cout << "Password: " << user->get_password() << endl;
 			cout << endl;

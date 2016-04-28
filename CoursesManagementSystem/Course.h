@@ -12,8 +12,9 @@ class Course
 public:
 	Course();
 	Course(string name);
+	static Course* load(string* data);
 	static Course* load(int id);
-	static Course** loadAll();
+	static List<Course*>* loadAll();
 	int save();
 	bool trash();
 

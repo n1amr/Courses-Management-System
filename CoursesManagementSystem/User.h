@@ -12,8 +12,9 @@ class User
 public:
 	User();
 	User(string user, string pass);
+	static User* load(string* data);
 	static User* load(int id);
-	static User** loadAll();
+	static List<User*>* loadAll();
 	int save();
 	bool trash();
 
