@@ -46,7 +46,6 @@ List<Course*>* Course::get_prerequisites()
 
 void Course::add_prerequisite(Course* course)
 {
-	// if( find(prerequisites->begin(), prerequisites->end(), course->get_id()) == prerequisites->end() )
 	if( prerequisites->find(course->get_id()) == -1 )
 	{
 		prerequisites->push_back(course->get_id());
@@ -121,7 +120,7 @@ int Course::save()
 {
 	DBManager* db = DBManager::get_singleton();
 
-	int data_len = 2;
+	int data_len = 3;
 	string *data = new string[data_len];
 
 //	data[0] = to_string(id); // Skip
@@ -143,4 +142,3 @@ bool Course::trash()
 	DBManager* db = DBManager::get_singleton();
 	return db->trash("course", id);
 }
-
