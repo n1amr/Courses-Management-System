@@ -125,6 +125,7 @@ int Course::save()
 
 //	data[0] = to_string(id); // Skip
 	data[1] = name;
+
 	stringstream ss;
 	ss << prerequisites->size();
 	for (Node<int>* it = prerequisites->begin(); it != nullptr; it = it->GetNext())

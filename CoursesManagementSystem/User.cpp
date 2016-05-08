@@ -57,7 +57,7 @@ List<Course*>* User::get_courses()
 
 void User::add_course(Course* course)
 {
-	if( courses->find(course->get_id()) != -1 )
+	if( courses->find(course->get_id()) == -1 )
 	{
 		courses->push_back(course->get_id());
 	}
@@ -139,7 +139,7 @@ int User::save()
 	data[2] = password;
 	stringstream ss;
 	ss << courses->size();
-	for (auto it = courses->begin(); it != courses->end(); it++)
+	for (auto it = courses->begin(); it != nullptr; it = it->GetNext())
 	{
 		ss << " " << *(*it);
 	}
