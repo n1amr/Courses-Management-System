@@ -88,10 +88,42 @@ void UserManager::add_user_course(int user_id, int course_id)
 {
 	User* user = User::load(user_id);
 	Course* course = Course::load(course_id);
+	List<Course*>* pre = course->get_prerequisites();
+	List<Course*>* courses = user->get_courses();
+	int flag = 0;
+	if (pre->empty())
+	{
+		user->add_course(course);
+		user->save();
+	}
+	else{
+		for (Node<Course*>* it = pre->begin(); it != nullptr; it = it->GetNext())
+		{
+			Course* pre = *(*it);
+			bool met = false;
+			for (Node<Course*>* itt = courses->begin(); itt != nullptr; itt = itt->GetNext())
+			{
+				Course *c = *(*itt);
+				if(pre->get_id() == c->get_id())
+				{
+					met = true;
+					break;
+				}
+			}
+			if(!met) {
+				flag = 1;
+				break;
+			}
+		}
+	}
 
-	user->add_course(course);
-	user->save();
-
+	if (flag == 1)
+		cout << "you didn't take this prerequisites for this course sorry " << endl;
+	else
+	{
+		user->add_course(course);
+		user->save();
+	}
 	delete user;
 	delete course;
 }
