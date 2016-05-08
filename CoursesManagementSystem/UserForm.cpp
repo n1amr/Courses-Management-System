@@ -45,8 +45,14 @@ void UserForm::remove_user_course() {
 }
 
 void UserForm::list_courses() {
-    //TODO
-    //    UserManager::
+    List<Course*> *courses = Course::loadAll();
+    for(Node<Course*> *it = courses->begin(); it != nullptr; it = it->GetNext())
+    {
+        Course *course = *(*it);
+        cout << "ID: " << course->get_id() << endl;
+        cout << "Name: " << course->get_name() << endl;
+        cout << "------------------------"<< endl << endl;
+    }
 }
 
 void UserForm::view_course() {
