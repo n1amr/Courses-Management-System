@@ -108,20 +108,3 @@ void UserForm::run_form() {
         getline(cin, s);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
