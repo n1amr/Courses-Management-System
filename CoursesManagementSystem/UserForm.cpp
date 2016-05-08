@@ -18,6 +18,7 @@ void UserForm::edit_user() {
     getline(cin, password);
 
     UserManager::edit_user(user->get_id(),username,password);
+		user = User::load(user->get_id()); // Reload
 }
 
 void UserForm::delete_user() {
@@ -51,7 +52,12 @@ void UserForm::list_all_courses() {
         Course *course = *(*it);
         cout << "ID: " << course->get_id() << endl;
         cout << "Name: " << course->get_name() << endl;
-        cout << "------------------------"<< endl << endl;
+				cout << "Prerequisites: ";
+				for(Node<Course*> *it2 = course->get_prerequisites()->begin(); it2 != nullptr; it2 = it2->GetNext()) {
+					Course *preq= *(*it2);
+					cout << preq->get_name() << ", ";
+				}
+        cout << endl << "------------------------"<< endl << endl;
     }
 }
 
