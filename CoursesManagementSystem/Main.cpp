@@ -4,15 +4,10 @@
 #include"User.h"
 #include"iostream"
 #include "UserForm.h"
-
 using namespace std;
 
 void clear_screen();
-
-User *is_registered(string username, string password);
-
 void signup();
-
 void signin();
 
 int main()
@@ -22,15 +17,12 @@ int main()
 	int choice;
 	while (true)
 	{
-		cout << "1- Admin\n2- Signup\n3- Signin\n4- Exit\n Your choice: ";
+		cout << "1- Admin\n2- Signup\n3- Signin\n4- Exit\nYour choice: ";
 		cin >> choice;
+		clear_screen();
+
 		if (choice == 1)
-		{
-			clear_screen();
 			AdminForm::run_form();
-			clear_screen();
-			main();
-		}
 		else if (choice == 2)
 			signup();
 		else if (choice == 3)
@@ -48,12 +40,12 @@ void signin()
 	cin >> username;
 	cout << "Enter your password: ";
 	cin >> password;
-	User *user = is_registered(username, password);
+	User *user = User::authenticate(username, password);
 	if (user == nullptr)
-		cout << "your username and password are not correct\n ";
+		cout << "Your username and password are not correct" << endl;
 	else
 	{
-		cout << "you are successfully logged in \n";
+		cout << "You are successfully logged in" << endl;
 		UserForm userForm(user);
 		userForm.run_form();
 	}
@@ -63,33 +55,24 @@ void signup()
 {
 	clear_screen();
 
-	string username, password;
+	string username, password, password2;
 	clear_screen();
 	cout << "Select your username: ";
 	cin >> username;
 	cout << "Select your password : ";
 	cin >> password;
-	List<User*>* users = User::loadAll();
-	User *u = new User();
-
-	bool found = false;
-	for(Node<User*>* it = users->begin(); it != nullptr; it = it->GetNext())
-	{
-		User *user = *(*it);
-		if (user != nullptr && username == user->get_username())
-		{
-			found = true;
-			break;
-		}
-	}
-	if (found)
-		cout << "Sorry,you already registered before\n";
+	cout << "Confirm your password : ";
+	cin >> password2;
+	User *u = User::is_registered(username);
+	if (u != nullptr)
+		cout << "Sorry,you already registered before" << endl;
+	else if(password != password2)
+		cout << "Passwords don't match" << endl;
 	else
 	{
-		u->set_username(username);
-		u->set_password(password);
-		u->save();
-		cout << "you have successfully registered !\n";
+		User *user = new User(username, password);
+		user->save();
+		cout << "You have successfully registered!" << endl;
 	}
 }
 
@@ -101,17 +84,4 @@ void clear_screen()
 #ifdef __linux__
 	system("clear");
 #endif
-}
-
-User *is_registered(string username, string password)
-{
-	List<User*>* users = User::loadAll();
-	for(Node<User*>* it = users->begin(); it != nullptr; it = it->GetNext())
-	{
-		User *user = *(*it);
-		if (user != nullptr && username == user->get_username() && password == user->get_password())
-			return user;
-	}
-
-	return nullptr;
 }

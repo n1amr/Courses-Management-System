@@ -154,3 +154,26 @@ bool User::trash()
 	DBManager* db = DBManager::get_singleton();
 	return db->trash("user", id);
 }
+
+User *User::is_registered(string username)
+{
+	List<User*>* users = User::loadAll();
+	for(Node<User*>* it = users->begin(); it != nullptr; it = it->GetNext())
+	{
+		User *user = *(*it);
+		if (user != nullptr && username == user->get_username())
+			return user;
+	}
+
+	return nullptr;
+}
+
+User *User::authenticate(string username, string password)
+{
+	User *user = is_registered(username);
+	if (user != nullptr && username == user->get_username() && user->get_password() == password)
+		return user;
+	return nullptr;
+}
+
+

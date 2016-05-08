@@ -18,6 +18,9 @@ public:
 	int save();
 	bool trash();
 
+	static User* is_registered(string username);
+	static User* authenticate(string username, string password);
+
 	int get_id();
 	void set_username(string username);
 	void set_password(string password);
