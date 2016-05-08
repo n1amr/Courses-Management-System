@@ -47,7 +47,7 @@ bool BST<T>::Insert(T d) {
 
 	TreeNode<T> *tmp = Root;
 	while (tmp!=nullptr) {
-		if (tmp->Data == d)
+		if ((*comparator)(d,tmp->Data) == 0)
 			return false;
 		else if ((*comparator)(d,tmp->Data) > 0)
 			if (tmp->Right == nullptr) {
@@ -79,7 +79,7 @@ void BST<T>::Remove(T d) {
 	TreeNode<T> *parent = nullptr;
 	char child;
 	while (tmp != nullptr) {
-		if (tmp->Data == d)
+		if ((*comparator)(d,tmp->Data) == 0)
 			break;
 		else if(comparator(d, tmp->Data) > 0) {
 			parent = tmp;

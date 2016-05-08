@@ -4,13 +4,50 @@
 #include"iostream"
 #include "UserForm.h"
 #include "Helper.h"
+#include "BST.h"
+#include "string"
+
 using namespace std;
 
 void signup();
 void signin();
 
+int comp(User& x, User& y)
+{
+	return x.get_username().compare(y.get_username());
+}
+
 int main()
 {
+	BST<User&> tree(comp);
+	List<User*>* users = User::loadAll();
+	for(Node<User*>* it = users->begin(); it != nullptr; it = it->GetNext()) {
+		User& user = **(*it);
+		tree.Insert(user);
+		//cout << user->get_username() << endl;
+		//cout << (*user) << endl;
+	}
+
+	tree.PrintInorder();
+
+
+	//BST<string> tree(comp);	
+	//tree.Insert("a");
+	//tree.Insert("b");
+	//tree.Insert("ant");
+	//tree.Insert("bat");
+	//tree.Insert("cat");
+	//tree.PrintInorder();
+
+	//	BST<int> tree(comp);	
+	//tree.Insert(4);
+	//tree.Insert(7);
+	//tree.Insert(2);
+	//tree.Insert(3);
+	//tree.Insert(1);
+	//tree.PrintInorder();
+
+	return 0;
 	string s;
 	int choice;
 	while(true)

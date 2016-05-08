@@ -3,33 +3,36 @@
 #include"TreeNode.h"
 
 template <class T>
-TreeNode<T>::TreeNode(T x,TreeNode<T> *left, TreeNode<T> *right){
-	Data = x;
-	this->Left = left;
-	this->Right = right;
+TreeNode<T>::TreeNode(T x, TreeNode<T> *left, TreeNode<T> *right) : Data(x), Left(left), Right(right) {
 }
+
 template <class T>
-T TreeNode<T>::GetData(){
+T TreeNode<T>::GetData() {
 	return Data;
 }
+
 template <class T>
-TreeNode<T>* TreeNode<T>::GetLeft(){
+TreeNode<T>* TreeNode<T>::GetLeft() {
 	return Left;
 }
+
 template <class T>
-TreeNode<T>* TreeNode<T>::GetRight(){
+TreeNode<T>* TreeNode<T>::GetRight() {
 	return Right;
 }
+
 template <class T>
-void TreeNode<T>::SetData(T d){
+void TreeNode<T>::SetData(T d) {
 	Data = d;
 }
+
 template <class T>
-void TreeNode<T>::SetLeft(TreeNode<T>* left){
+void TreeNode<T>::SetLeft(TreeNode<T>* left) {
 	Left = left;
 }
+
 template <class T>
-void TreeNode<T>::SetRight(TreeNode<T>* right){
+void TreeNode<T>::SetRight(TreeNode<T>* right) {
 	Right = right;
 }
 

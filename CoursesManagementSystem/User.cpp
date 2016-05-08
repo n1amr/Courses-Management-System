@@ -33,12 +33,12 @@ void User::set_password(string password)
 	this->password = password;
 }
 
-string User::get_username()
+string User::get_username() const
 {
 	return username;
 }
 
-string User::get_password()
+string User::get_password() const
 {
 	return password;
 }
@@ -176,4 +176,11 @@ User *User::authenticate(string username, string password)
 	return nullptr;
 }
 
+ostream& operator<<(ostream& os, const User& u) {
+	return os << u.get_username();
+}
 
+bool User::operator==(User const& u) const
+{
+	return this->id == u.id;
+}
