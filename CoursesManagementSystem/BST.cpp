@@ -1,55 +1,64 @@
 #ifndef BinarySearchTree_CPP_
 #define BinarySearchTree_CPP_
+
 #include"BST.h"
 #include<iostream>
-template<class T>
-BST<T>::BST()
-{
-	Root = nullptr;
 
+template<class T>
+BST<T>::BST() {
+	Root = nullptr;
 }
 
-
 template<class T>
-BST<T>::BST(TreeNode<T> *root){
+BST<T>::BST(TreeNode<T> *root) {
 	this->Root = root;
 }
 
 template<class T>
-TreeNode<T>* BST<T>::Search(T d){
+BST<T>::BST(int (*compare)(T, T)) {
+	comparator = compare;
+	Root = nullptr;
+}
+
+template<class T>
+TreeNode<T>* BST<T>::Search(T d) {
 	if (isEmpty())
 		return nullptr;
+
 	TreeNode<T>*tmp = Root;
-	while (tmp!=nullptr)
+	while (tmp != nullptr)
 	{
 		if (tmp->Data == d)
 			return tmp;
-		else if (d > tmp->Data)
+		else if (comparator(d, tmp->Data) > 0)
 			tmp = tmp->Right;
 		else
 			tmp = tmp->Left;
 	}
 	return nullptr;
 }
+
 template<class T>
-bool BST<T>::Insert(T d){
-	if (isEmpty()){
-		Root = new TreeNode<T>(d); return true;
+bool BST<T>::Insert(T d) {
+	if (isEmpty()) {
+		Root = new TreeNode<T>(d);
+		return true;
 	}
+
 	TreeNode<T> *tmp = Root;
-	while (tmp!=nullptr){
-		if (tmp->Data == d) return false;
-//		else if (d > tmp->Data)
+	while (tmp!=nullptr) {
+		if (tmp->Data == d)
+			return false;
 		else if ((*comparator)(d,tmp->Data) > 0)
-			if (tmp->Right == nullptr){
+			if (tmp->Right == nullptr) {
 				TreeNode<T> * newnode = new TreeNode<T>(d);
 				tmp->Right = newnode;
 				return true;
 			}
 			else
 				tmp = tmp->Right;
-		else{
-			if (tmp->Left == nullptr){
+		else {
+			if (tmp->Left == nullptr) {
 				TreeNode<T> * newnode = new TreeNode<T>(d);
 				tmp->Left = newnode;
 				return true;
@@ -57,46 +66,47 @@ bool BST<T>::Insert(T d){
 			else
 				tmp = tmp->Left;
 		}
-	}	
-  	return false;
+	}
+	return false;
 }
+
 template<class T>
-void BST<T>::Remove(T d){
-	if (isEmpty()) return ;
-	if (Search(d) == nullptr)return;
-	TreeNode<T>*tmp = Root;
-	TreeNode<T>*parent = nullptr;
+void BST<T>::Remove(T d) {
+	if (isEmpty() || Search(d) == nullptr)
+		return;
+
+	TreeNode<T> *tmp = Root;
+	TreeNode<T> *parent = nullptr;
 	char child;
-	while (tmp != nullptr)
-	{
+	while (tmp != nullptr) {
 		if (tmp->Data == d)
 			break;
-		else if (comparator(d, tmp->Data)>0){
+		else if(comparator(d, tmp->Data) > 0) {
 			parent = tmp;
 			tmp = tmp->Right;
 			child = 'R';
 		}
-		else{
+		else {
 			parent = tmp;
 			tmp = tmp->Left;
 			child = 'L';
 		}
 	}
-	//if want to delete is leaf 
-	if (isLeaf(tmp))
-	{
+
+	//if want to delete is leaf
+	if (isLeaf(tmp)) {
 		if (parent != nullptr)
 			if (child == 'L')
 				parent->Left = nullptr;
-			else  // child is right 
+			else  // child is right
 				parent->Right = nullptr;
 		else
 			Root = nullptr;
 		return;
 	}
-	//if has one child right  
-	else if (tmp->Left==nullptr){
-		if (parent != nullptr){
+	//if has one child right
+	else if (tmp->Left==nullptr) {
+		if (parent != nullptr) {
 			if (child == 'R')
 				parent->Right = tmp->Right;
 			else
@@ -106,7 +116,7 @@ void BST<T>::Remove(T d){
 			Root = tmp->Right;
 	}
 	//if has one child left
-	else if (tmp->Right==nullptr){
+	else if (tmp->Right == nullptr) {
 		if (parent != nullptr){
 			if (child == 'R')
 				parent->Right = tmp->Left;
@@ -115,84 +125,69 @@ void BST<T>::Remove(T d){
 		}
 		else
 			Root = tmp->Left;
-
 	}
 	// if has 2 childs
-	else{
-		
-        TreeNode<T> * leftChild = tmp->Left;
-		if (leftChild->Right == nullptr){
+	else {
+		TreeNode<T> *leftChild = tmp->Left;
+		if (leftChild->Right == nullptr) {
 			tmp->Data=leftChild->Data;
-		    tmp->Left=leftChild->Left;
+			tmp->Left=leftChild->Left;
 		}
 
 		TreeNode<T>* parent2 = leftChild;
-		
-		while (leftChild->Right!=nullptr){   	
+		while (leftChild->Right != nullptr) {
 			parent2 = leftChild;
 			leftChild = leftChild->Right;
 		}
 		tmp->Data = leftChild->Data;
 		parent2->Right = nullptr;
-	
 	}
 }
+
 template<class T>
-void BST<T>::PrintInorder()
-{
+void BST<T>::PrintInorder() {
 	PrintInorderhelper(Root);
 }
+
 template<class T>
-void BST<T>::PrintInorderhelper(TreeNode<T> *ptr){
-	if (ptr != nullptr)
-	{
-		if (ptr->Left != nullptr)
-		{
-			PrintInorderhelper(ptr->Left);
-		}
-		std::cout << ptr->Data << " ";
-		if (ptr->Right != nullptr)
-		{
-			PrintInorderhelper(ptr->Right);
-		}
-		
-		
-	}
-	else
+void BST<T>::PrintInorderhelper(TreeNode<T> *ptr) {
+	if (ptr == nullptr) {
 		std::cout << "the tree is empty\n";
+		return;
+	}
+
+	if (ptr->Left != nullptr)
+		PrintInorderhelper(ptr->Left);
+
+	std::cout << ptr->Data << " ";
+
+	if (ptr->Right != nullptr)
+		PrintInorderhelper(ptr->Right);
 }
+
 template<class T>
-TreeNode<T>* BST<T>::getRoot(){
+TreeNode<T>* BST<T>::getRoot() {
 	return Root;
 }
+
 template<class T>
-TreeNode<T>* BST<T>::getRightSubtree(){
+TreeNode<T>* BST<T>::getRightSubtree() {
 	return Root->Right;
 }
+
 template<class T>
-TreeNode<T>* BST<T>::getLeftSubtree(){
+TreeNode<T>* BST<T>::getLeftSubtree() {
 	return Root->Left;
 }
+
 template<class T>
-bool BST<T>::isEmpty(){
-	if (Root == nullptr)
-		return true;
-	return false;
-}
-template<class T>
- bool BST<T>::isLeaf(TreeNode<T>* t){
-	if (isEmpty())return false;
-	if (t->Left==nullptr && t->Right == nullptr)
-		return true;
-	return false;
+bool BST<T>::isEmpty() {
+	return Root == nullptr;
 }
 
 template<class T>
-BST<T>::BST(int (*compare)(T, T))
-{
-	comparator = compare;
-	Root = nullptr;
+bool BST<T>::isLeaf(TreeNode<T>* t) {
+	return (!isEmpty() && t->Left == nullptr && t->Right == nullptr);
 }
-
 
 #endif
