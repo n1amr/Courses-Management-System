@@ -44,8 +44,20 @@ void UserForm::remove_user_course() {
     UserManager::remove_user_course(user->get_id(),course_id);
 }
 
-void UserForm::list_courses() {
+void UserForm::list_all_courses() {
     List<Course*> *courses = Course::loadAll();
+    for(Node<Course*> *it = courses->begin(); it != nullptr; it = it->GetNext())
+    {
+        Course *course = *(*it);
+        cout << "ID: " << course->get_id() << endl;
+        cout << "Name: " << course->get_name() << endl;
+        cout << "------------------------"<< endl << endl;
+    }
+}
+
+void UserForm::list_user_courses()
+{
+    List<Course*> *courses = user->get_courses();
     for(Node<Course*> *it = courses->begin(); it != nullptr; it = it->GetNext())
     {
         Course *course = *(*it);
@@ -81,9 +93,10 @@ void UserForm::run_form() {
         cout << "	3- Delete profile." << endl;
         cout << "	4- Add course." << endl;
         cout << "	5- Remove course." << endl;
-        cout << "	6- List courses." << endl;
-        cout << "	7- View course." << endl;
-        cout << "	8- Sign out." << endl;
+        cout << "	6- List my courses." << endl;
+        cout << "	7- List all courses." << endl;
+        cout << "	8- View course." << endl;
+        cout << "	9- Sign out." << endl;
         int response = -1;
         cin >> response;
         getline(cin, s);
@@ -98,16 +111,20 @@ void UserForm::run_form() {
         else if (response == 5)
             remove_user_course();
         else if (response == 6)
-            list_courses();
+            list_user_courses();
         else if (response == 7)
-            view_course();
+            list_all_courses();
         else if (response == 8)
+            view_course();
+        else if (response == 9)
             return;
 
         cout << "Press [ENTER] to continue";
         getline(cin, s);
     }
 }
+
+
 
 
 

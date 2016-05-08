@@ -17,7 +17,8 @@ public:
     void delete_user();
     void add_user_course();
     void remove_user_course();
-    void list_courses();
+		void list_all_courses();
+		void list_user_courses();
     void view_course();
 
     UserForm(User *pUser);
