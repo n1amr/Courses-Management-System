@@ -9,7 +9,7 @@ using namespace std;
 class DBManager
 {
 private:
-	DBManager(){}
+	DBManager();
 	static DBManager* singleton;
 
 public:

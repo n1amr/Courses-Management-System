@@ -1,15 +1,13 @@
 #include"DBManager.h"
-#include "LinkedList.h"
-
-#include<stdio.h>
-#include<string>
 #include<iostream>
 #include<fstream>
+#include <cstring>
+
 using namespace std;
 
 /* Helper functions */
 string get_database_path() { return "database"; }
-string get_table_path(string table_name) {return get_database_path() + "/" + table_name; }
+string get_table_path(string table_name) { return get_database_path() + "/" + table_name; }
 string get_table_info_filename(string table_name) { return get_table_path(table_name) + "/info"; }
 string get_entry_filename(string table_name, int id) { return get_table_path(table_name) + "/" + to_string(id) + ".dat"; }
 bool file_exists(string filename) {
@@ -19,13 +17,17 @@ bool file_exists(string filename) {
 	return exists;
 }
 
+DBManager::DBManager()
+{
+}
+
 DBManager* DBManager::singleton = NULL;
 
 DBManager* DBManager::get_singleton()
 {
 	if(singleton == NULL)
 		singleton = new DBManager();
-	return singleton;
+		return singleton;
 }
 
 int DBManager::store(string table_name, int id, int data_len, string* data)
@@ -68,14 +70,10 @@ List<string*>* DBManager::loadAll(string table_name, int data_len)
 	int last_id = get_last_id(table_name);
 
 	List<string*>* rows = new List<string*>();
-//	for(int i = 0; i < last_id + 1; i++)
-//		rows[i] = NULL;
 
 	for(int id = 0; id <= last_id; id++)
-	{
 		if(file_exists(get_entry_filename(table_name, id)))
 			rows->push_back(load(table_name, id, data_len));
-	}
 
 	return rows;
 }
