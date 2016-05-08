@@ -39,7 +39,8 @@ bool BST<T>::Insert(T d){
 	TreeNode<T> *tmp = Root;
 	while (tmp!=nullptr){
 		if (tmp->Data == d) return false;
-		else if (d > tmp->Data)
+//		else if (d > tmp->Data)
+		else if ((*comparator)(d,tmp->Data) > 0)
 			if (tmp->Right == nullptr){
 				TreeNode<T> * newnode = new TreeNode<T>(d);
 				tmp->Right = newnode;
@@ -70,7 +71,7 @@ void BST<T>::Remove(T d){
 	{
 		if (tmp->Data == d)
 			break;
-		else if (d > tmp->Data){
+		else if (comparator(d, tmp->Data)>0){
 			parent = tmp;
 			tmp = tmp->Right;
 			child = 'R';
@@ -159,10 +160,6 @@ void BST<T>::PrintInorderhelper(TreeNode<T> *ptr){
 	}
 	else
 		std::cout << "the tree is empty\n";
-
-
-
-
 }
 template<class T>
 TreeNode<T>* BST<T>::getRoot(){
@@ -189,5 +186,13 @@ template<class T>
 		return true;
 	return false;
 }
+
+template<class T>
+BST<T>::BST(int (*compare)(T, T))
+{
+	comparator = compare;
+	Root = nullptr;
+}
+
 
 #endif
