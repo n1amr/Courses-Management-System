@@ -5,6 +5,7 @@
 #include"Course.h"
 #include"UserManager.h"
 #include"CourseManager.h"
+#include "Helper.h"
 #include<iostream>
 #include<string>
 using namespace std;
@@ -12,11 +13,14 @@ using namespace std;
 void AdminForm::run_form()
 {
 	string s;
-	while(true)
+	do
 	{
+		Helper::clear_screen();
 		cout << "Select model:" << endl;
 		cout << "	1- User." << endl;
 		cout << "	2- Course." << endl;
+		cout << "Or:" << endl;
+		cout << "	3- Exit." << endl;
 
 		int response = -1;
 		cin >> response; getline(cin, s);
@@ -24,19 +28,21 @@ void AdminForm::run_form()
 			run_user_form();
 		else if(response == 2)
 			run_course_form();
+		else if(response == 3)
+			return;
 
-		cout << "Continue? (y/n) ";
+		cout << "Press [ENTER] to continue";
 		getline(cin, s);
-		if(s == "n")
-			break;
-	}
+	}while(true);
 }
 
 void AdminForm::run_user_form()
 {
+	Helper::clear_screen();
+
 	string s;
 
-	cout << "Select opeation:" << endl;
+	cout << "Select operation:" << endl;
 	cout << "	1- List users." << endl;
 	cout << "	2- Create user." << endl;
 	cout << "	3- Retrieve user." << endl;
@@ -64,6 +70,8 @@ void AdminForm::run_user_form()
 
 void AdminForm::run_course_form()
 {
+	Helper::clear_screen();
+
 	string s;
 
 	cout << "Select opeation:" << endl;
@@ -108,7 +116,7 @@ void AdminForm::create_new_user()
 
 	int id = UserManager::create_new_user(username, password);
 
-	cout << "User was saved woth id #" << id << endl;
+	cout << "User was saved with id #" << id << endl;
 }
 
 void AdminForm::view_user()
@@ -138,7 +146,7 @@ void AdminForm::edit_user()
 		user->set_password(s);
 
 	id = user->save();
-	cout << "User was saved woth id #" << id << endl;
+	cout << "User was saved with id #" << id << endl;
 	delete user;
 }
 

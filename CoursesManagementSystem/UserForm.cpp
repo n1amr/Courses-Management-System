@@ -2,6 +2,7 @@
 #include "UserForm.h"
 #include "UserManager.h"
 #include "CourseManager.h"
+#include "Helper.h"
 
 void UserForm::view_user() {
     UserManager::view_user(user->get_id());
@@ -66,6 +67,8 @@ void UserForm::run_form() {
     string s;
 
     while(true) {
+        Helper::clear_screen();
+
         cout << "Select operation:" << endl;
         cout << "	1- View profile." << endl;
         cout << "	2- Edit profile." << endl;
@@ -94,6 +97,9 @@ void UserForm::run_form() {
             view_course();
         else if (response == 8)
             return;
+
+        cout << "Press [ENTER] to continue";
+        getline(cin, s);
     }
 }
 
