@@ -3,6 +3,7 @@
 #include "UserManager.h"
 #include "CourseManager.h"
 #include "Helper.h"
+using namespace std;
 
 void UserForm::view_user() {
     UserManager::view_user(user->get_id());

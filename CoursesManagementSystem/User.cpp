@@ -82,6 +82,9 @@ User *User::load(string *data)
 {
 	User *user = new User();
 
+	if(data == nullptr)
+		return nullptr;
+
 	int data_len = 4;
 
 	user->id = atoi(data[0].c_str());

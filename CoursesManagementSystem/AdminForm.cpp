@@ -136,6 +136,12 @@ void AdminForm::edit_user()
 
 	User* user = User::load(id);
 
+	if(user == nullptr)
+	{
+		cout << "User doesn't exist" << endl;
+		return;
+	}
+
 	cout << "Edit username(" << user->get_username() << "):" ;
 	getline(cin, s);
 	if(s.length() > 0)
@@ -215,6 +221,10 @@ void AdminForm::edit_course()
 	int id; cin >> id; getline(cin, s);
 
 	Course* course = Course::load(id);
+	if(course == nullptr) {
+		cout << "Course doesn't exist" << endl;
+		return;
+	}
 
 	cout << "Edit course name(" << course->get_name() << "):" ;
 	getline(cin, s);

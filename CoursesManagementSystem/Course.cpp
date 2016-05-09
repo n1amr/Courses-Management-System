@@ -39,7 +39,8 @@ List<Course*>* Course::get_prerequisites()
 	{
 		int course_id = *(*it);
 		Course* course = Course::load(course_id);
-		l->push_back(course);
+		if(course != nullptr)
+			l->push_back(course);
 	}
 	return l;
 }
@@ -70,6 +71,9 @@ int Course::get_id()
 Course* Course::load(string *data)
 {
 	Course *course = new Course();
+
+	if(data == nullptr)
+		return nullptr;
 
 	stringstream ss;
 

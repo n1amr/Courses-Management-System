@@ -46,6 +46,11 @@ int UserManager::create_new_user(string username, string password)
 void UserManager::view_user(int id)
 {
 	User* user = User::load(id);
+	if(user == nullptr)
+	{
+		cout << "User doesn't exist" << endl;
+		return;
+	}
 
 	cout << "Username: " << user->get_username() << endl;
 	cout << "Password: " << user->get_password() << endl;
@@ -65,6 +70,11 @@ void UserManager::view_user(int id)
 void UserManager::edit_user(int id, string username, string password)
 {
 	User* user = User::load(id);
+	if(user == nullptr)
+	{
+		cout << "User doesn't exist" << endl;
+		return;
+	}
 
 	if(username.length() > 0)
 		user->set_username(username);
@@ -79,6 +89,12 @@ void UserManager::edit_user(int id, string username, string password)
 void UserManager::delete_user(int id)
 {
 	User* user = User::load(id);
+	if(user == nullptr)
+	{
+		cout << "User doesn't exist" << endl;
+		return;
+	}
+
 	user->trash();
 
 	delete user;
@@ -87,33 +103,39 @@ void UserManager::delete_user(int id)
 void UserManager::add_user_course(int user_id, int course_id)
 {
 	User* user = User::load(user_id);
+	if(user == nullptr)
+	{
+		cout << "User doesn't exist" << endl;
+		return;
+	}
+
 	Course* course = Course::load(course_id);
+	if(course == nullptr)
+	{
+		cout << "Course doesn't exist" << endl;
+		return;
+	}
+
 	List<Course*>* pre = course->get_prerequisites();
 	List<Course*>* courses = user->get_courses();
 	int flag = 0;
-	if (pre->empty())
+
+	for (Node<Course*>* it = pre->begin(); it != nullptr; it = it->GetNext())
 	{
-		user->add_course(course);
-		user->save();
-	}
-	else{
-		for (Node<Course*>* it = pre->begin(); it != nullptr; it = it->GetNext())
+		Course* pre = *(*it);
+		bool met = false;
+		for (Node<Course*>* itt = courses->begin(); itt != nullptr; itt = itt->GetNext())
 		{
-			Course* pre = *(*it);
-			bool met = false;
-			for (Node<Course*>* itt = courses->begin(); itt != nullptr; itt = itt->GetNext())
+			Course *c = *(*itt);
+			if(pre->get_id() == c->get_id())
 			{
-				Course *c = *(*itt);
-				if(pre->get_id() == c->get_id())
-				{
-					met = true;
-					break;
-				}
-			}
-			if(!met) {
-				flag = 1;
+				met = true;
 				break;
 			}
+		}
+		if(!met) {
+			flag = 1;
+			break;
 		}
 	}
 
@@ -134,7 +156,18 @@ void UserManager::add_user_course(int user_id, int course_id)
 void UserManager::remove_user_course(int user_id, int course_id)
 {
 	User* user = User::load(user_id);
+	if(user == nullptr)
+	{
+		cout << "User doesn't exist" << endl;
+		return;
+	}
+
 	Course* course = Course::load(course_id);
+	if(course == nullptr)
+	{
+		cout << "Course doesn't exist" << endl;
+		return;
+	}
 
 	user->remove_course(course);
 	user->save();

@@ -52,6 +52,12 @@ int CourseManager::create_new_course(string course_name)
 void CourseManager::view_course(int id)
 {
 	Course* course = Course::load(id);
+	if(course == nullptr)
+	{
+		cout << "Course doesn't exist" << endl;
+		return;
+	}
+
 
 	cout << "Course name: " << course->get_name() << endl;
 	cout << "Prerequisite: " << endl;
@@ -67,6 +73,11 @@ void CourseManager::view_course(int id)
 void CourseManager::edit_course(int id, string course_name)
 {
 	Course* course = Course::load(id);
+	if(course == nullptr)
+	{
+		cout << "Course doesn't exist" << endl;
+		return;
+	}
 
 	cout << "Edit course name(" << course->get_name() << "):" ;
 	if(course_name.length() > 0)
@@ -79,6 +90,12 @@ void CourseManager::edit_course(int id, string course_name)
 void CourseManager::delete_course(int id)
 {
 	Course* course = Course::load(id);
+	if(course == nullptr)
+	{
+		cout << "Course doesn't exist" << endl;
+		return;
+	}
+
 	course->trash();
 
 	delete course;
@@ -87,7 +104,15 @@ void CourseManager::delete_course(int id)
 void CourseManager::add_course_prerequisites(int course_id, int prerequisite_course_id)
 {
 	Course* course = Course::load(course_id);
+	if(course == nullptr) {
+		cout << "Course doesn't exist" << endl;
+		return;
+	}
 	Course* course2 = Course::load(prerequisite_course_id);
+	if(course2 == nullptr) {
+		cout << "Course doesn't exist" << endl;
+		return;
+	}
 
 	course->add_prerequisite(course2);
 	course->save();
@@ -99,7 +124,15 @@ void CourseManager::add_course_prerequisites(int course_id, int prerequisite_cou
 void CourseManager::remove_course_prerequisites(int course_id, int prerequisite_course_id)
 {
 	Course* course = Course::load(course_id);
+	if(course == nullptr) {
+		cout << "Course doesn't exist" << endl;
+		return;
+	}
 	Course* course2 = Course::load(prerequisite_course_id);
+	if(course2 == nullptr) {
+		cout << "Course doesn't exist" << endl;
+		return;
+	}
 
 	course->remove_prerequisite(course2);
 	course->save();

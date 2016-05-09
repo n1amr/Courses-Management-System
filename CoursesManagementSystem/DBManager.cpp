@@ -56,12 +56,17 @@ string* DBManager::load(string table_name, int id, int data_len)
 	string s;
 	string* data = new string[data_len];
 
+	string filename = get_entry_filename(table_name, id);
+	
+	if(!file_exists(filename))
+		return nullptr;
+	
 	// Read entry file lines
-	ifstream fin(get_entry_filename(table_name, id));
+	ifstream fin(filename);
 	for(int i = 0; i < data_len; i++)
 		getline(fin, data[i]);
 	fin.close();
-
+	
 	return data;
 }
 
