@@ -50,7 +50,8 @@ List<Course*>* User::get_courses()
 	{
 		int course_id = *(*it);
 		Course* course = Course::load(course_id);
-		c->push_back(course);
+		if(course != nullptr)
+			c->push_back(course);
 	}
 	return c;
 }
@@ -58,9 +59,7 @@ List<Course*>* User::get_courses()
 void User::add_course(Course* course)
 {
 	if( courses->find(course->get_id()) == -1 )
-	{
 		courses->push_back(course->get_id());
-	}
 }
 
 void User::remove_course(int id)
@@ -124,7 +123,8 @@ List<User*>* User::loadAll()
 	{
 		string *data = *(*it);
 		User *user = load(data);
-		users->push_back(user);
+		if(user != nullptr)
+			users->push_back(user);
 	}
 
 	return users;
@@ -143,9 +143,8 @@ int User::save()
 	stringstream ss;
 	ss << courses->size();
 	for (auto it = courses->begin(); it != nullptr; it = it->GetNext())
-	{
 		ss << " " << *(*it);
-	}
+
 	data[3] = ss.str();
 
 	id = db->store("user", id, data_len, data);

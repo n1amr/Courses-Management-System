@@ -1,10 +1,5 @@
-//
-// Created by n1amr on 4/26/16.
-//
-
 #ifndef COURSESMANAGEMENTSYSTEM_USERFORM_H
 #define COURSESMANAGEMENTSYSTEM_USERFORM_H
-
 
 #include "User.h"
 
@@ -25,6 +20,5 @@ public:
 
     void run_form();
 };
-
 
 #endif //COURSESMANAGEMENTSYSTEM_USERFORM_H

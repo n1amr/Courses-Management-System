@@ -114,7 +114,8 @@ List<Course*>* Course::loadAll()
 	{
 		string *data = *(*it);
 		Course *course = load(data);
-		courses->push_back(course);
+		if(course != nullptr)
+			courses->push_back(course);
 	}
 
 	return courses;

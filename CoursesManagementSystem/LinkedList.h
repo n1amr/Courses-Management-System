@@ -4,7 +4,6 @@
 #include "Node.h"
 using namespace std;
 
-
 template<class T>
 class List
 {
