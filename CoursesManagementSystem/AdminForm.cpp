@@ -74,7 +74,7 @@ void AdminForm::run_course_form()
 
 	string s;
 
-	cout << "Select opeation:" << endl;
+	cout << "Select operation:" << endl;
 	cout << "	1- List courses." << endl;
 	cout << "	2- Create course." << endl;
 	cout << "	3- Retrieve course." << endl;
@@ -202,7 +202,7 @@ void AdminForm::create_new_course()
 
 	int id = CourseManager::create_new_course(course_name);
 
-	cout << "Course was saved woth id #" << id << endl;
+	cout << "Course was saved with id #" << id << endl;
 }
 
 void AdminForm::view_course()
@@ -232,7 +232,7 @@ void AdminForm::edit_course()
 		course->set_name(s);
 
 	id = course->save();
-	cout << "Course was saved woth id #" << id << endl;
+	cout << "Course was saved with id #" << id << endl;
 	delete course;
 }
 

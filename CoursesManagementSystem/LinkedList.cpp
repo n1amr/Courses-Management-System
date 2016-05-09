@@ -49,7 +49,7 @@ void List<T>::push_back(T d)
 		return;
 	}
 	Node<T> *temp = head; //initialization
-	while (temp->next != nullptr) //itteration till finding the end of List
+	while (temp->next != nullptr) //iteration till finding the end of List
 		temp = temp->next;
 	Node<T> *nw = new Node<T>(d);
 	temp->next = nw;

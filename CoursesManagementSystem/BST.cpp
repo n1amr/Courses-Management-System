@@ -126,7 +126,7 @@ void BST<T>::Remove(T d) {
 		else
 			Root = tmp->Left;
 	}
-	// if has 2 childs
+	// if has 2 children
 	else {
 		TreeNode<T> *leftChild = tmp->Left;
 		if (leftChild->Right == nullptr) {
