@@ -22,7 +22,14 @@ void UserForm::edit_user() {
 }
 
 void UserForm::delete_user() {
-    UserManager::delete_user(user->get_id());
+    cout << "Are you sure? [y/n]";
+		string s;
+		getline(cin, s);
+		if(s == "y")
+		{
+			UserManager::delete_user(user->get_id());
+			user = nullptr;
+		}
 }
 
 void UserForm::add_user_course() {
@@ -33,6 +40,7 @@ void UserForm::add_user_course() {
     getline(cin, s);
 
     UserManager::add_user_course(user->get_id(),course_id);
+		user = User::load(user->get_id()); // Reload
 }
 
 void UserForm::remove_user_course() {
@@ -43,6 +51,7 @@ void UserForm::remove_user_course() {
     getline(cin, s);
 
     UserManager::remove_user_course(user->get_id(),course_id);
+		user = User::load(user->get_id()); // Reload
 }
 
 void UserForm::list_all_courses() {
@@ -90,7 +99,7 @@ UserForm::UserForm(User* user) {
 void UserForm::run_form() {
     string s;
 
-    while(true) {
+    while(user != nullptr) {
         Helper::clear_screen();
 
         cout << "Select operation:" << endl;
