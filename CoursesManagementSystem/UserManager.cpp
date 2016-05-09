@@ -118,7 +118,10 @@ void UserManager::add_user_course(int user_id, int course_id)
 	}
 
 	if (flag == 1)
-		cout << "you didn't take this prerequisites for this course sorry " << endl;
+	{
+		cout << "You didn't take this prerequisites for this course sorry " << endl;
+		course->printPrerequisiteTree();
+	}
 	else
 	{
 		user->add_course(course);

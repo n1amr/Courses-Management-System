@@ -27,6 +27,9 @@ public:
 	void remove_prerequisite(int id);
 	void remove_prerequisite(Course* course);
 
+	static void printPrerequisiteTree(Course* c, string indent);
+	void printPrerequisiteTree();
+
 private:
 	int id;
 	string name;

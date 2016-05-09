@@ -143,3 +143,20 @@ bool Course::trash()
 	DBManager* db = DBManager::get_singleton();
 	return db->trash("course", id);
 }
+
+void Course::printPrerequisiteTree(Course* c, string indent)
+{
+	if(c == nullptr)
+		return;
+
+	cout << indent << c->get_name() << endl;
+	indent += "|   ";
+	for (Node<Course*>* it = c->get_prerequisites()->begin(); it != nullptr; it = it->GetNext()) {
+		printPrerequisiteTree(*(*it), indent);
+	}
+}
+
+void Course::printPrerequisiteTree()
+{
+	printPrerequisiteTree(this, "");
+}
